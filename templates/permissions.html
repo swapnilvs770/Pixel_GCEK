@@ -1,0 +1,205 @@
+{% extends 'base.html' %}
+
+{% block title %}Permission Letter - Pixel Club{% endblock %}
+
+{% block extra_head %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+{% endblock %}
+
+{% block content %}
+<section class="permissions-header">
+    <h1>Permission Form</h1>
+    <p>Please fill in the form to request permission.</p>
+    <p id="typing-effect">
+        <script>
+            const text = "🔔 Your PERMISSION request status will be sent to your registered email. Please also check your spam folder!";
+            let index = 0;
+            let isDeleting = false;
+
+            function typeEffect() {
+                const element = document.getElementById("typing-effect");
+
+                if (!isDeleting) {
+                    element.innerHTML = text.substring(0, index) + "|"; // Typing cursor effect
+                    index++;
+                    if (index > text.length) {
+                        isDeleting = true;
+                        setTimeout(typeEffect, 2000); // Pause before deleting
+                        return;
+                    }
+                } else {
+                    element.innerHTML = text.substring(0, index) + "|";
+                    index--;
+                    if (index < 0) {
+                        isDeleting = false;
+                    }
+                }
+                setTimeout(typeEffect, isDeleting ? 50 : 100); // Faster deletion speed
+            }
+
+            window.onload = typeEffect;
+        </script>
+    </p>
+</section>
+
+<section class="permission-form">
+
+    <form id="permissionForm" action="/submit_permission" method="POST">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="{{ user_name }}" readonly required>
+
+        <label for="clg_mail">College Mail ID:</label>
+        <input type="text" id="clg_mail" name="clg_mail" value="{{ user_email }}" readonly required>
+
+        <label for="club">Club/Committee:</label>
+        <select id="club" name="club" required>
+            <option value="" disabled selected>Select your club or committee</option>
+            <option value="magazine_committee">Magazine Committee</option>
+            <option value="annual_day_committee">Annual Day Committee</option>
+            <option value="cultural_team">Cultural Committee</option>
+
+            <option value="nss">NSS</option>
+            <option value="iste">ISTE</option>
+            <option value="ncc">NCC</option>
+            <option value="defence_club">Defence Club</option>
+            <option value="dais_club">Dais Club</option>
+            <option value="pixel_club">Pixel Club</option>
+            <option value="cec_club">CEC Club</option>
+            <option value="house_of_arts_club">House of Arts Club</option>
+            <option value="alphageeks">Alphageeks</option>
+            <option value="space_club">Space Club</option>
+            <option value="robo_club">Robo Club</option>
+            <option value="ai_and_blockchain">AI and Blockchain Club</option>
+            <option value="sae_club">SAE Club</option>
+            <option value="electrochasers_club">Electrochasers Club</option>
+        </select>
+
+        <label for="date">Date:</label>
+        <input type="date" id="date" name="date" required>
+
+        <label for="time">Time:</label>
+        <input type="time" id="time" name="time" required>
+
+        <label for="location">Location:</label>
+        <select id="location" name="location" required>
+            <option value="" disabled selected>Select Location</option>
+            <option value="Auditorium">Auditorium</option>
+            <option value="Civil Dept">Civil Dept</option>
+            <option value="COE Cell">COE Cell</option>
+            <option value="Cyber Tower">Cyber Tower</option>
+            <option value="Electrical Dept">Electrical Dept</option>
+            <option value="ENTC Dept">ENTC Dept</option>
+            <option value="Gymkhana">Gymkhana</option>
+            <option value="IT Dept - I Classroom">IT Dept</option>
+            <option value="MCA Dept">MCA Dept</option>
+            <option value="Mechanical Dept">Mechanical Dept</option>
+            <option value="New IT Building">New IT Building</option>
+            <option value="New Library">New Library</option>
+            <option value="Open Theatre (OT)">Open Theatre (OT)</option>
+            <option value="TPO Office">TPO Office</option>
+        </select>
+
+        <label for="contact">Contact No.:</label>
+        <input type="tel" id="contact" name="contact_no" pattern="[0-9]{10}" required>
+
+        <label for="contact_mail">Contact Mail ID:</label>
+        <input type="email" id="contact_mail" name="contact_mail" required>
+
+        <button type="submit">Submit Request</button>
+    </form>
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const form = document.getElementById("permissionForm");
+        const dateInput = document.getElementById("date");
+        const timeInput = document.getElementById("time");
+
+        // Set minimum date to 2 days from today
+        let today = new Date();
+        let dayAfterTomorrow = new Date();
+        dayAfterTomorrow.setDate(today.getDate() + 1);
+        let minDate = dayAfterTomorrow.toISOString().split("T")[0];
+        dateInput.setAttribute("min", minDate);
+
+        // Form submission validation
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            // Get form values
+            const name = document.getElementById("name").value.trim();
+            const clg_mail = document.getElementById("clg_mail").value.trim(); // Assuming you have a clg_mail input field in your HTML form als
+            const club = document.getElementById("club").value.trim();
+            const date = dateInput.value;
+            const time = timeInput.value;
+            const location = document.getElementById("location").value.trim();
+            const contact = document.getElementById("contact_no").value.trim();
+            const contact_mail = document.getElementById("contact_mail").value.trim();
+
+            // Basic field validation
+            if (!name || !club || !date || !time || !location || !contact || !contact_mail) {
+                alert("❌ Please fill in all fields.");
+                return;
+            }
+
+            // Contact number validation
+            if (!/^\d{10}$/.test(contact)) {
+                alert("❌ Please enter a valid 10-digit contact number.");
+                return;
+            }
+
+            // Time validation (08:00 AM - 06:00 PM)
+            let [hours, minutes] = time.split(":").map(Number);
+            if (hours < 8 || hours > 18 || (hours === 18 && minutes > 0)) {
+                alert("❌ Please select a time between 08:00 AM and 06:00 PM.");
+                timeInput.value = ""; // Reset invalid input
+                return;
+            }
+
+            // If all validations pass, show SweetAlert
+            Swal.fire({
+                title: `Thank you, ${name}! 🙏`,
+                html: `Your permission request has been submitted.<br><br>
+                           📧 Please stay connected. Your request status will be conveyed soon on your registered <strong>Email</strong> and <strong>WhatsApp</strong>.`,
+                icon: "success",
+                confirmButtonText: "OK"
+            }).then(() => {
+                // Reset the form after successful submission
+                form.reset();
+            });
+        });
+
+        // Time validation on input
+        timeInput.addEventListener("input", function () {
+            let selectedTime = timeInput.value;
+            if (selectedTime) {
+                let [hours, minutes] = selectedTime.split(":").map(Number);
+                if (hours < 8 || hours > 18 || (hours === 18 && minutes > 0)) {
+                    alert("❌ Please select a time between 08:00 AM and 06:00 PM.");
+                    timeInput.value = ""; // Reset invalid input
+                }
+            }
+        });
+    });
+
+
+
+</script>
+
+<script>
+    document.getElementById("permissionForm").addEventListener("submit", function (e) {
+        e.preventDefault(); // Prevent default form submission
+
+        const name = document.getElementById("name").value;
+
+        Swal.fire({
+            title: `Thank you, ${name}! 🙏`,
+            html: `Your permission request has been submitted.<br><br>\r\n                   📧 Please stay connected. Your request status will be conveyed soon on your registered <strong>Email</strong> and <strong>WhatsApp</strong>.`,
+            icon: "success",
+            confirmButtonText: "OK"
+        }).then(() => {
+            // Submit the form after the alert is acknowledged
+            this.submit();
+        });
+    });
+</script>
+{% endblock %}

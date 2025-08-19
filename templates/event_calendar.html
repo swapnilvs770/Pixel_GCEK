@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Calendar - Pixel Club</title>
+    <link rel="stylesheet" href="static/styles.css">
+    <style>
+        /* Previous styles remain the same */
+        .day-header {
+            background: #1a237e;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        
+        .day {
+            min-height: 100px;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+            border: 1px solid #ddd;
+        }
+        
+        .other-month {
+            background: #f9f9f9;
+            color: #aaa;
+        }
+        
+        .current-month {
+            background: #e8eaf6;
+        }
+        
+        .today {
+            border: 2px solid #1a237e;
+            background: #d1d9ff;
+        }
+        
+        .has-events {
+            background: #fff9c4; /* Yellow for days with events */
+        }
+        
+        .multiple-events {
+            background: #ffcdd2; /* Red for days with multiple events */
+        }
+        
+        .event-count {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            background: #1a237e;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation remains the same -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="{{url_for('index')}}">
+                <img id="logo" src="static/images/logo-black.png" alt="Pixel Club Logo" style="height: 50px; display: block;">
+            </a>
+        </div>
+        <ul class="nav-links" style="list-style: none; display: flex; flex-grow: 1; justify-content: space-evenly; align-items: center; padding: 0; margin: 0;">
+            <li><a href="{{url_for('index')}}" style="text-decoration: none; color: black; font-size: 18px; font-weight: bold;">Home</a></li>
+            <li><a href="{{url_for('gallery')}}" style="text-decoration: none; color: black; font-size: 18px; font-weight: bold;">Gallery</a></li>
+            <li><a href="{{url_for('team')}}" style="text-decoration: none; color: black; font-size: 18px; font-weight: bold;">Team</a></li>
+            <li><a href="{{url_for('permissions')}}" style="text-decoration: none; color: black; font-size: 18px; font-weight: bold;">Permission</a></li>
+            <li><a href="{{url_for('event_calendar')}}" style="text-decoration: none; color: black; font-size: 18px; font-weight: bold;">Event Calendar</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <h1>Event Calendar</h1>
+        
+        <div class="nav">
+            <a href="{{ url_for('event_calendar', year=prev_year, month=prev_month) }}" class="nav-btn">‹ Previous</a>
+            <div class="current-month">{{ month_name }} {{ year }}</div>
+            <a href="{{ url_for('event_calendar', year=next_year, month=next_month) }}" class="nav-btn">Next ›</a>
+        </div>
+        
+        <div class="calendar">
+            <div class="day-header">Mon</div>
+            <div class="day-header">Tue</div>
+            <div class="day-header">Wed</div>
+            <div class="day-header">Thu</div>
+            <div class="day-header">Fri</div>
+            <div class="day-header">Sat</div>
+            <div class="day-header">Sun</div>
+            
+            {% set first_day = datetime(year, month, 1) %}
+            {% set last_day = (first_day.replace(month=first_day.month % 12 + 1, day=1) - timedelta(days=1) if month < 12 else datetime(year + 1, 1, 1) - timedelta(days=1) %}
+            
+            <!-- Days from previous month -->
+            {% set prev_month_last_day = (first_day - timedelta(days=1)).day %}
+            {% set days_to_show_from_prev_month = first_day.weekday() %}
+            {% for day in range(prev_month_last_day - days_to_show_from_prev_month + 1, prev_month_last_day + 1) %}
+                <div class="day other-month">{{ day }}</div>
+            {% endfor %}
+            
+            <!-- Current month days -->
+            {% for day in range(1, last_day.day + 1) %}
+                {% set current_date = datetime(year, month, day).date() %}
+                {% set date_str = current_date.strftime('%Y-%m-%d') %}
+                <div class="day current-month {% if current_date == today %}today{% endif %} 
+                    {% if date_str in events_by_date %}
+                        {% if events_by_date[date_str]|length > 1 %}multiple-events{% else %}has-events{% endif %}
+                    {% endif %}">
+                    
+                    <div class="date">{{ day }}</div>
+                    {% if date_str in events_by_date %}
+                        <div class="event-count">{{ events_by_date[date_str]|length }}</div>
+                        {% for event in events_by_date[date_str] %}
+                            <div class="event">
+                                {{ event['event_name'] }}
+                                <div class="event-details">
+                                    <strong>{{ event['event_name'] }}</strong><br>
+                                    Date: {{ event['event_date'].strftime('%Y-%m-%d') }}<br>
+                                    Time: {{ event['event_time'] }}<br>
+                                    Location: {{ event['location'] }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+            
+            <!-- Days from next month -->
+            {% set days_shown = days_to_show_from_prev_month + last_day.day %}
+            {% set days_to_show_from_next_month = (7 - (days_shown % 7)) % 7 %}
+            {% for day in range(1, days_to_show_from_next_month + 1) %}
+                <div class="day other-month">{{ day }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

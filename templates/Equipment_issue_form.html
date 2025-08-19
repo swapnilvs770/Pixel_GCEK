@@ -1,0 +1,257 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Issue Equipment - Pixel Club{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* Equipment_issue_form.html specific styles */
+  form {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 30px auto;
+    box-shadow: 0 4px 15px rgba(var(--text-primary-rgb), 0.1);
+    border: 1px solid var(--border-color);
+  }
+
+  label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  input[type="text"],
+  input[type="date"],
+  textarea,
+  select {
+    width: calc(100% - 24px); /* Adjust for padding and border */
+    padding: 12px;
+    margin-bottom: 18px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1em;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  textarea:focus,
+  select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 3px rgba(var(--secondary-color-rgb), 0.3);
+    outline: none;
+  }
+
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+  }
+
+  /* Submit button styling - uses admin-button primary class */
+  button[type="submit"] {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+  }
+
+  .back-link {
+    display: block;
+    margin-top: 25px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: bold;
+    font-size: 1.05em;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+
+  .back-link:hover {
+    color: var(--secondary-color);
+    transform: translateX(-5px);
+  }
+
+  .error-message {
+    color: var(--accent-color); /* Use accent color for errors */
+    font-size: 0.9em;
+    margin-top: -10px; /* Pull it closer to the field */
+    margin-bottom: 15px;
+    display: block; /* Ensure it takes its own line */
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 768px) {
+    form {
+      padding: 15px;
+      margin: 20px auto;
+      width: 95%;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea,
+    select {
+      width: calc(100% - 24px);
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 12px;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+  <h2>📦 Issue Equipment</h2>
+  <form method="POST">
+    <label for="borrower_name">Borrower Name:</label>
+    <input type="text" id="borrower_name" name="borrower_name" required><br>
+
+    <label for="equipment_id">Equipment:</label>
+    <select id="equipment_id" name="equipment_id" required>
+      <option value="">-- Select Equipment --</option>
+      {% for eq in available_equipment %}
+      <option value="{{ eq.id }}" data-available="{{ eq.available }}">{{ eq.name }} (Available: {{ eq.available }})
+      </option>
+      {% endfor %}
+    </select><br>
+
+    <label for="quantity">Quantity to Issue:</label>
+    <input type="number" id="quantity" name="quantity" min="1" required><br>
+    <span id="quantity-error" class="error-message"></span>
+
+    <label for="issue_date">Issue Date:</label>
+    <input type="date" id="issue_date" name="issue_date" required><br>
+    <span id="issue-date-error" class="error-message"></span>
+
+    <label for="return_date">Expected Return Date:</label>
+    <input type="date" id="return_date" name="return_date" required><br>
+    <span id="return-date-error" class="error-message"></span>
+
+    <label for="purpose">Purpose:</label>
+    <textarea id="purpose" name="purpose"></textarea><br>
+
+    <button type="submit" class="admin-button primary">Issue</button>
+  </form>
+
+  <br><a href="/inventory" class="back-link">← Back to Inventory</a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+    const equipmentSelect = document.getElementById('equipment_id');
+    const quantityInput = document.getElementById('quantity');
+    const quantityError = document.getElementById('quantity-error');
+    const issueDateInput = document.getElementById('issue_date');
+    const returnDateInput = document.getElementById('return_date');
+    const issueDateError = document.getElementById('issue-date-error');
+    const returnDateError = document.getElementById('return-date-error');
+
+    // Set today's date as the default and minimum for issue date
+    const today = new Date();
+    const todayISO = today.toISOString().split('T')[0];
+    issueDateInput.value = todayISO;
+    issueDateInput.min = todayISO;
+
+    // Set minimum date for return date to tomorrow or issue date
+    function setMinReturnDate() {
+      const issueDate = new Date(issueDateInput.value);
+      const minReturnDate = new Date(issueDate);
+      minReturnDate.setDate(issueDate.getDate() + 1); // Set to day after issue date
+      returnDateInput.min = minReturnDate.toISOString().split('T')[0];
+
+      // If current return date is earlier than new min, update it
+      if (new Date(returnDateInput.value) < minReturnDate) {
+        returnDateInput.value = minReturnDate.toISOString().split('T')[0];
+      }
+    }
+
+    issueDateInput.addEventListener('change', setMinReturnDate);
+    // Call on load to set initial min for return date
+    setMinReturnDate();
+
+
+    equipmentSelect.addEventListener('change', function () {
+      const selectedOption = equipmentSelect.options[equipmentSelect.selectedIndex];
+      const availableQuantity = parseInt(selectedOption.getAttribute('data-available'));
+      quantityInput.max = availableQuantity; // Set max quantity based on available stock
+
+      if (parseInt(quantityInput.value) > availableQuantity) {
+        quantityInput.value = availableQuantity; // Adjust if current value exceeds new max
+      }
+      validateQuantity(); // Re-validate quantity on equipment change
+    });
+
+    quantityInput.addEventListener('input', validateQuantity);
+
+    function validateQuantity() {
+      const selectedOption = equipmentSelect.options[equipmentSelect.selectedIndex];
+      const availableQuantity = parseInt(selectedOption.getAttribute('data-available'));
+      const requestedQuantity = parseInt(quantityInput.value);
+
+      if (isNaN(requestedQuantity) || requestedQuantity <= 0) {
+        quantityError.textContent = 'Quantity must be a positive number.';
+      } else if (requestedQuantity > availableQuantity) {
+        quantityError.textContent = `Only ${availableQuantity} available.`;
+      } else {
+        quantityError.textContent = ''; // Clear error
+      }
+    }
+
+    form.addEventListener('submit', function (event) {
+      let isValid = true;
+
+      // Validate Quantity
+      validateQuantity();
+      if (quantityError.textContent) {
+        isValid = false;
+      }
+
+      // Validate Dates
+      const issueDate = new Date(issueDateInput.value);
+      const returnDate = new Date(returnDateInput.value);
+
+      issueDateError.textContent = '';
+      returnDateError.textContent = '';
+
+      // Set time to 00:00:00 for accurate date comparison without time
+      issueDate.setHours(0, 0, 0, 0);
+      returnDate.setHours(0, 0, 0, 0);
+      today.setHours(0, 0, 0, 0); // Ensure today is also at 00:00:00
+
+      if (issueDate < today) {
+        issueDateError.textContent = 'Issue date cannot be in the past.';
+        isValid = false;
+      }
+
+      if (returnDate <= issueDate) {
+        returnDateError.textContent = 'Return date must be after the issue date.';
+        isValid = false;
+      }
+
+
+      if (!isValid) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
+
+    // Initial validation when page loads
+    validateQuantity();
+  });
+</script>
+{% endblock %}

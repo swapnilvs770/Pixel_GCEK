@@ -1,0 +1,75 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Add Co-Admin - Pixel Club{% endblock %}
+
+{% block content %}
+<div style="max-width: 500px; margin: 40px auto; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); background-color: #f9f9f9;">
+    <h2 style="text-align: center; color: #343a40;">Add Pixerl Member</h2>
+    
+    <form id="addCoadminForm" method="POST" enctype="multipart/form-data"
+      style="display: flex; flex-direction: column; gap: 15px; max-width: 400px; margin: auto;">
+
+    <label style="font-weight: bold;">Full Name</label>
+    <input type="text" name="name" placeholder="Enter full name" required
+           style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+    <label style="font-weight: bold;">Username</label>
+    <input type="text" name="username" placeholder="Enter username" required
+           style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+    <label style="font-weight: bold;">Email</label>
+    <input type="email" name="email" placeholder="Enter email" required
+           style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+    <label style="font-weight: bold;">Password</label>
+    <input type="password" name="password" placeholder="Enter password" required
+           style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+    <label style="font-weight: bold;">Role</label>
+    <select name="role" required
+            style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        <option value="">--Select Role--</option>
+        <option value="super_admin">Pixel Head</option>
+        <option value="co_admin">Pixel Member</option>
+        <option value="faculty_advisor">Faculty Advisor</option>
+    </select>
+
+    <label style="font-weight: bold;">Photo</label>
+    <input type="file" name="photo" accept="image/*" required
+           style="padding: 10px; border: 1px solid #ccc; border-radius: 5px;">
+
+    <button type="submit"
+            style="background-color: #007bff; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer;">
+         Add As Admin
+    </button>
+</form>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+document.getElementById('addCoadminForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const form = this;
+    Swal.fire({
+        title: 'Confirm Addition',
+        text: 'Do you want to add this Admin?',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, Add',
+        cancelButtonText: 'Cancel'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.submit();
+        }
+    });
+});
+</script>
+
+
+    <div style="text-align: center; margin-top: 20px;">
+        <a href="{{ url_for('admin_dashboard') }}" 
+           style="color: #007bff; text-decoration: none;">← Back to Dashboard</a>
+    </div>
+</div>
+{% endblock %}

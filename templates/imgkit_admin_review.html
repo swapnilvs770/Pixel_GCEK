@@ -1,0 +1,97 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Review Album – Pixel Club{% endblock %}
+
+{% block extra_head %}
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500&f[]=manrope@500&display=swap" rel="stylesheet">
+  <style>
+    /* Your existing styles from imgkit_admin_review.html go here */
+    body {
+      font-family: 'Satoshi', sans-serif;
+      background-color: #f8f8f8;
+      padding: 2rem; /* Adjusted for overall page padding, may need fine-tuning with base_admin.css */
+      color: #222;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      font-family: 'Manrope', sans-serif;
+    }
+
+    form {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .image-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+
+    .image-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    .image-card img {
+      max-width: 100%;
+      border-radius: 4px;
+      margin-bottom: 0.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 500;
+      margin-top: 0.8rem;
+      font-size: 0.95rem;
+    }
+
+    input[type="radio"],
+    input[type="checkbox"] {
+      margin-right: 0.4rem;
+    }
+
+    button {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.7rem 1.6rem;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <h1>Review Album: {{ album.title }}</h1>
+  <form method="POST">
+    <div class="image-grid">
+      {% for image, link in image_download_pairs %}
+        <div class="image-card">
+          <img src="{{ album.preview }}{{ image | replace(' ', '%20') }}" alt="{{ image }}">
+          <label>
+            <input type="checkbox" name="keep" value="{{ image }}" checked> Keep
+          </label>
+          <label>
+            <input type="radio" name="thumbnail" value="{{ image }}" {% if loop.first %}checked{% endif %}> Thumbnail
+          </label>
+        </div>
+      {% endfor %}
+    </div>
+    <button type="submit">Finalize & Publish Album</button>
+  </form>
+{% endblock %}

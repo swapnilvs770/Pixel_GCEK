@@ -1,0 +1,1123 @@
+:root {
+    --primary-color: #00796B;
+    /* Deep Teal - Professional & Creative */
+    --secondary-color: #4DB6AC;
+    /* Soft Mint - Lighter complement */
+    --accent-color: #FF7043;
+    /* Vibrant Coral - Energetic pop */
+    --success-color: #4CAF50;
+    /* Emerald Green - Success */
+    --warning-color: #FFB300;
+    /* Soft Amber - Warning */
+    --bg-color: #F8F8F8;
+    /* Warm Off-White - Clean canvas */
+    --card-bg: #FFFFFF;
+    /* Pure White - Crisp content blocks */
+    --text-primary: #212121;
+    /* Charcoal Gray - Legible main text */
+    --text-muted: #757575;
+    /* Medium Gray - Muted text */
+    --border-color: #E0E0E0;
+    /* Light Gray - Subtle borders */
+    --navbar-bg: #FFFFFF;
+    /* White for navbar in light mode */
+    --navbar-text: var(--text-primary);
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Custom styles for the new modern navbar design */
+
+
+.modern-navbar {
+    display: flex;
+    align-items: center;
+    background-color:#00796B; /* Dark background for the main navbar in light mode */
+    border-radius: 9999px; /* Fully rounded corners for the navbar pill */
+    padding: 8px 16px; /* Adjust padding as needed */
+    /* Using text-primary for shadow, assuming it's dark in light mode */
+    box-shadow: 0 4px 15px rgba(var(--text-primary-rgb), 0.2);
+    max-width: fit-content; /* Ensure the navbar shrinks to fit content */
+    margin: 20px auto; /* Center the navbar and give some top margin */
+    transition: background-color 0.5s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* Define RGB values for your main colors if not already present in :root */
+:root {
+    /* ... existing variables ... */
+    --text-primary-rgb: 33, 33, 33; /* RGB for #212121 (text-primary) */
+    --navbar-bg-rgb: 255, 255, 255; /* RGB for #FFFFFF (navbar-bg) */
+    --accent-color-rgb: 255, 112, 67; /* RGB for #FF7043 (accent-color) */
+}
+
+
+
+
+.modern-navbar .nav-logo {
+    background-color: #00796B; /* White background for the logo circle in light mode */
+    border-radius: 50%; /* Make it a circle */
+    width: 50px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 16px; /* Space between logo and nav links */
+    box-shadow: 0 2px 5px rgba(var(--text-primary-rgb), 0.1);
+    transition: background-color 0.5s ease;
+}
+
+/* --- FIX START --- */
+.modern-navbar .nav-logo img { /* Changed from svg to img */
+    width: 60px; /* Set the width for the image */
+    height: 60px; /* Set the height for the image */
+    object-fit: contain; /* Ensures the image scales down to fit without cropping */
+    transition: all 0.5s ease; /* Transition for potential future changes */
+}
+/* --- FIX END --- */
+
+
+.modern-navbar .nav-links {
+    list-style: none;
+    gap: 24px; /* Space between nav items */
+    margin: 0;
+    padding: 0;
+    flex-grow: 1; /* Allows links to take available space */
+    justify-content: flex-start; /* Align links to the left */
+}
+
+.modern-navbar .nav-links li {
+
+    display: inline-block; /* Ensure list items behave like blocks for padding */
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.modern-navbar .nav-links li a {
+    text-decoration: none;
+    color: var(--navbar-bg); /* White text for links in light mode */
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 8px 12px; /* Padding for click area and pill shape */
+    border-radius: 9999px; /* Rounded pill shape for links */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+
+
+
+.modern-navbar .nav-links li a:hover,
+.modern-navbar .nav-links li a.active {
+    /* Use navbar-bg with opacity for hover/active in light mode */
+    background-color: rgba(var(--navbar-bg-rgb), 0.1);
+    color: white; /* Keep text white on hover/active in light mode */
+}
+
+
+
+.modern-navbar .nav-links li .logout-btn {
+    background-color: var(--accent-color); /* Use accent color for the logout button */
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Match padding with links */
+    font-weight: 500; /* Match font-weight with links */
+    border-radius: 9999px; /* Fully rounded pill shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    box-shadow: none; /* Remove previous box-shadow */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.modern-navbar .nav-links li .logout-btn:hover {
+    /* A slightly darker shade of --accent-color for hover */
+    background-color: #e5653b;
+    transform: none; /* Remove translateY from previous .logout-btn */
+    box-shadow: none; /* Remove previous box-shadow from hover */
+}
+
+
+
+/* Responsive Design adjustments for the modern-navbar specifically */
+@media (max-width: 992px) {
+    .modern-navbar {
+        flex-direction: column;
+        padding: 10px;
+        border-radius: 20px; /* Adjust border-radius for smaller screens */
+        width: 90%; /* Occupy more width on smaller screens */
+        max-width: 400px; /* Limit max width for readability */
+    }
+
+    .modern-navbar .nav-logo {
+        margin-bottom: 10px;
+        margin-right: 0; /* Remove right margin when stacked */
+    }
+
+    .modern-navbar .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center; /* Center items when stacked */
+    }
+
+    .modern-navbar .nav-links li {
+        width: 100%; /* Make list items take full width */
+        text-align: center;
+    }
+
+    .modern-navbar .nav-links li a,
+    .modern-navbar .nav-links li .logout-btn {
+        width: calc(100% - 24px); /* Full width minus horizontal padding */
+        display: block; /* Make them block elements to take full width */
+    }
+
+    .modern-navbar .user-email {
+        margin-top: 10px;
+        margin-left: 0; /* Remove left margin when stacked */
+        width: calc(100% - 32px); /* Full width minus horizontal padding */
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .modern-navbar {
+        padding: 8px;
+        width: 95%;
+    }
+
+    .modern-navbar .nav-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .modern-navbar .nav-logo img { /* Changed from svg to img here too for responsiveness */
+        width: 20px;
+        height: 20px;
+    }
+
+    .modern-navbar .nav-links {
+        gap: 8px;
+    }
+
+    .modern-navbar .nav-links li a,
+    .modern-navbar .nav-links li .logout-btn,
+    .modern-navbar .user-email {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+}
+
+
+.admin-container {
+    background: var(--card-bg); /* Pure White - Crisp content blocks */
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(var(--text-primary-rgb), 0.1); /* Soft shadow from text-primary */
+    border-radius: 10px;
+    margin: 40px auto;
+    width: 90%;
+    max-width: 1200px;
+    border: 1px solid var(--border-color); /* Light Gray - Subtle borders */
+    transition: background-color 0.5s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Headings within admin pages */
+.admin-container h2 {
+    color: var(--primary-color); /* Deep Teal - Professional & Creative */
+    margin-bottom: 25px;
+    font-size: 2em;
+    position: relative;
+    padding-bottom: 10px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    text-align: center;
+}
+
+.admin-container h2::after {
+    content: '';
+    position: absolute;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); /* Gradient from primary to accent */
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* Table Styling - using primary color for headers, consistent borders */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    background: var(--card-bg); /* Pure White */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    transition: background-color 0.5s ease, box-shadow 0.3s ease;
+}
+
+table,
+th,
+td {
+    border: 1px solid var(--border-color); /* Light Gray for borders */
+}
+
+th,
+td {
+    padding: 15px;
+    text-align: left;
+    color: var(--text-primary); /* Charcoal Gray */
+}
+
+th {
+    background: var(--primary-color); /* Deep Teal for table headers */
+    color: white;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+tr:nth-child(even) {
+    background-color: var(--bg-color); /* Warm Off-White for even rows */
+}
+
+tr:hover {
+    background-color: rgba(var(--primary-color-rgb), 0.05); /* Slight hover effect */
+}
+
+/* Buttons in admin interface */
+.admin-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+}
+
+.admin-button.primary {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.admin-button.primary:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--primary-color-rgb), 0.2);
+}
+
+.admin-button.danger {
+    background-color: var(--accent-color);
+    color: white;
+}
+
+.admin-button.danger:hover {
+    background-color: #e5653b; /* A darker shade of accent color */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(var(--accent-color-rgb), 0.2);
+}
+
+
+
+
+/* Footer */
+.footer {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    padding: 60px 0 0;
+    border-top: 1px solid var(--border-color);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease, border-top 0.5s ease;
+}
+
+
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.footer-section {
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+.footer-section p {
+    margin: 15px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.footer-section i {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    min-width: 25px;
+    flex-shrink: 0;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 15px;
+}
+
+.footer-section ul li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+}
+
+.footer-section ul li a::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: var(--primary-color);
+    transform: translateX(8px);
+}
+
+.footer-section ul li a:hover::before {
+    transform: translateX(5px);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 48px;
+    height: 48px;
+    background-color: var(--bg-color);
+    color: var(--text-muted);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.social-links a:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
+}
+
+.footer-bottom {
+    background-color: var(--navbar-bg);
+    padding: 25px 0;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    transition: all 0.5s ease;
+}
+
+
+/* Gallery Page Specific Styles (from imgkit_admin_gallery.html) */
+
+/* General body/page background is handled by base_admin.html */
+body {
+    font-family: 'Satoshi', sans-serif; /* Keep specific font if desired for body */
+    color: var(--text-primary);
+    /* padding: 2rem; Removed as admin-container handles padding */
+}
+
+h1 {
+    font-family: 'Aeonik', sans-serif;
+    text-align: center;
+    font-size: 2.5em; /* Adjusted size for prominence */
+    margin-bottom: 2.5em; /* Increased margin for spacing */
+    font-weight: 500;
+    color: var(--primary-color); /* Deep Teal */
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    width: 80px; /* Wider underline */
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color)); /* Gradient underline */
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-radius: 2px;
+}
+
+/* Album Upload Form Styling */
+.gallery-upload-form {
+    max-width: 800px; /* Increased max-width */
+    margin: 40px auto; /* Consistent margin */
+    padding: 30px;
+    background: var(--card-bg); /* Pure White */
+    border-radius: 12px; /* Softer corners */
+    box-shadow: 0 8px 25px rgba(var(--text-primary-rgb), 0.08); /* Enhanced shadow */
+    border: 1px solid var(--border-color); /* Subtle border */
+}
+
+.gallery-upload-form h2 {
+    color: var(--primary-color);
+    margin-bottom: 25px;
+    font-size: 1.8em;
+    text-align: center;
+}
+
+.gallery-upload-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.gallery-upload-form input[type="text"],
+.gallery-upload-form input[type="date"],
+.gallery-upload-form textarea,
+.gallery-upload-form input[type="file"] {
+    width: calc(100% - 22px); /* Account for padding/border */
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color); /* Light Gray border */
+    border-radius: 8px; /* Slightly more rounded inputs */
+    font-size: 1em;
+    color: var(--text-primary);
+    background-color: var(--bg-color); /* Warm Off-White background */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-upload-form input[type="text"]:focus,
+.gallery-upload-form input[type="date"]:focus,
+.gallery-upload-form textarea:focus,
+.gallery-upload-form input[type="file"]:focus {
+    border-color: var(--secondary-color); /* Soft Mint on focus */
+    box-shadow: 0 0 0 3px rgba(var(--secondary-color-rgb), 0.3); /* Subtle glow */
+    outline: none;
+}
+
+.gallery-upload-form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Progress Bar Styling */
+.progress-container {
+    width: 100%;
+    background-color: var(--border-color);
+    border-radius: 5px;
+    margin-bottom: 20px;
+    height: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background-color: var(--primary-color); /* Deep Teal progress bar */
+    border-radius: 5px;
+    transition: width 0.4s ease;
+}
+
+/* Album List Styling */
+.album-item {
+    background: var(--card-bg); /* Pure White */
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 10px; /* Consistent rounded corners */
+    box-shadow: 0 2px 10px rgba(var(--text-primary-rgb), 0.05); /* Lighter shadow */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid var(--border-color); /* Subtle border */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.album-item:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+    box-shadow: 0 6px 15px rgba(var(--text-primary-rgb), 0.1);
+}
+
+.album-item strong {
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.album-item em {
+    color: var(--text-muted);
+}
+
+.album-actions {
+    display: flex;
+    gap: 10px; /* Space between buttons */
+}
+
+/* Buttons for album actions - leverage admin-button classes */
+.album-actions .admin-button {
+    padding: 8px 16px; /* Slightly smaller buttons for actions */
+    font-size: 0.9em;
+}
+
+.album-actions .admin-button.secondary {
+    background-color: var(--secondary-color); /* Soft Mint for unpublish */
+    color: var(--text-primary);
+}
+
+.album-actions .admin-button.secondary:hover {
+    background-color: #3b9f93; /* Darker mint on hover */
+}
+
+/* Published/Drafted specific visual cues (optional, but good for clarity) */
+.album-item.published {
+    border-left: 5px solid var(--success-color); /* Green border for published */
+}
+
+.album-item.drafted {
+    border-left: 5px solid var(--warning-color); /* Amber border for drafted */
+}
+
+/* No albums text */
+p[style="text-align:center;"] { /* Be specific to avoid affecting other paragraphs */
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 20px;
+    font-size: 1.1em;
+}
+
+
+/* Overlay to cover the page */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9); /* Slightly more opaque white */
+    display: flex; /* Use flexbox for centering */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; /* Ensure it's on top of everything */
+    opacity: 0; /* Start hidden */
+    visibility: hidden; /* Start hidden */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Smooth transition */
+}
+
+/* Class to show the loader */
+.loader-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Focus Ring Loader Styles */
+.focus-ring-loader {
+    width: 80px; /* Adjust size as needed */
+    height: 80px; /* Keep width and height equal for a perfect circle */
+    border: 4px solid #e0e0e0; /* Light grey base ring */
+    border-top: 4px solid #337ab7; /* Blue-ish tint for the "focus" part */
+    border-radius: 50%;
+    position: relative;
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    animation: focusRingSpin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite; /* More dynamic spin */
+    transform-origin: center center; /* Ensure rotation is around the center */
+}
+
+/* Optional: Inner circle or dot for the lens effect */
+.focus-ring-loader::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px; /* Size of the inner dot/circle */
+    height: 20px;
+    background-color: #337ab7; /* Matching color to the ring */
+    border-radius: 50%;
+    opacity: 0.2; /* Subtle inner lens effect */
+}
+
+/* Keyframe animation for the focus ring spin */
+@keyframes focusRingSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Optional: Slight pulse animation for the whole loader */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+/* Apply pulse to the loader container if desired */
+
+/* .focus-ring-loader { animation: focusRingSpin 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite, pulse 2s ease-in-out infinite; } */
+
+
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+.pagination a, .pagination span {
+    display: inline-block;
+    padding: 8px 16px;
+    text-decoration: none;
+    color: #007bff;
+    border: 1px solid #ddd;
+    margin: 0 4px;
+    border-radius: 4px;
+}
+.pagination a.active {
+    background-color: #007bff;
+    color: white;
+    border: 1px solid #007bff;
+}
+.pagination a:hover:not(.active) {
+    background-color: #f2f2f2;
+}
+.search-form {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #eee;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+.search-form label {
+    margin-right: 10px;
+}
+.search-form input[type="text"],
+.search-form select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+    width: 180px; /* Adjust width as needed */
+}
+.search-form button {
+    padding: 8px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.search-form button:hover {
+    background-color: #218838;
+}
+
+
+
+
+.loader-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.shutter-loader {
+    position: relative;
+    width: 150px; /* Diameter of the shutter */
+    height: 150px;
+    border-radius: 50%;
+    overflow: hidden; /* Hides the parts of blades outside the circle */
+    background-color: #333; /* Dark background for contrast */
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.shutter-blade {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px; /* Width of the blade */
+    height: 15px; /* Thickness of the blade */
+    background-color: #000; /* Black color for the blades */
+    transform-origin: 0% 50%; /* Pivot point for rotation: left edge, center vertically */
+    transition: transform 0.3s ease-in-out; /* Smooth transition for opening/closing */
+}
+
+/* Initial positioning and rotation for the closed state */
+/* Each blade needs to be carefully positioned and rotated to form a closed aperture */
+/* Imagine a pie chart, each blade covers 60 degrees. */
+/* The transform-origin is 0% 50%, so we rotate it, then translate it to the center. */
+
+.blade-1 { transform: rotate(0deg) translate(-50%, -50%); }
+.blade-2 { transform: rotate(60deg) translate(-50%, -50%); }
+.blade-3 { transform: rotate(120deg) translate(-50%, -50%); }
+.blade-4 { transform: rotate(180deg) translate(-50%, -50%); }
+.blade-5 { transform: rotate(240deg) translate(-50%, -50%); }
+.blade-6 { transform: rotate(300deg) translate(-50%, -50%); }
+
+
+/* --- Animation States --- */
+
+/* Class to trigger the open state */
+.shutter-open .blade-1 { transform: rotate(30deg) translate(-50%, -50%); }
+.shutter-open .blade-2 { transform: rotate(90deg) translate(-50%, -50%); }
+.shutter-open .blade-3 { transform: rotate(150deg) translate(-50%, -50%); }
+.shutter-open .blade-4 { transform: rotate(210deg) translate(-50%, -50%); }
+.shutter-open .blade-5 { transform: rotate(270deg) translate(-50%, -50%); }
+.shutter-open .blade-6 { transform: rotate(330deg) translate(-50%, -50%); }
+
+/* CSS Keyframes for a more continuous animation effect */
+/* This will make the blades move slightly more dynamically than just class toggling */
+
+/* Define the opening animation */
+@keyframes openShutter {
+    0% { /* Closed State */
+        transform: rotate(var(--initial-rotation)) translate(-50%, -50%);
+    }
+    100% { /* Open State */
+        transform: rotate(var(--open-rotation)) translate(-50%, -50%);
+    }
+}
+
+/* Define the closing animation */
+@keyframes closeShutter {
+    0% { /* Open State */
+        transform: rotate(var(--open-rotation)) translate(-50%, -50%);
+    }
+    100% { /* Closed State */
+        transform: rotate(var(--initial-rotation)) translate(-50%, -50%);
+    }
+}
+
+/* Apply animation using variables set by JS */
+.shutter-blade.animating-open {
+    animation: openShutter 0.4s ease-out forwards; /* Forwards keeps the end state */
+}
+
+.shutter-blade.animating-close {
+    animation: closeShutter 0.4s ease-in forwards;
+}
+
+.loading-text {
+    color: #555;
+    font-size: 1.2em;
+}
+
+
+
+/* General styling for all action buttons */
+.action-btn {
+    padding: 10px 20px; /* Spacing inside the button */
+    border: none; /* No default border */
+    border-radius: 5px; /* Slightly rounded corners */
+    cursor: pointer; /* Indicates it's clickable */
+    font-size: 16px; /* Text size */
+    font-weight: bold; /* Bold text */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions for hover effects */
+    margin: 5px; /* Space between buttons */
+}
+
+/* Styling for the Accept button */
+.accept-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+}
+
+/* Hover effect for the Accept button */
+.accept-btn:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Styling for the Reject button */
+.reject-btn {
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+}
+
+/* Hover effect for the Reject button */
+.reject-btn:hover {
+    background-color: #da190b; /* Slightly darker red on hover */
+    transform: translateY(-2px); /* Slight lift effect */
+}
+
+/* Optional: Focus styles for accessibility */
+.action-btn:focus {
+    outline: 2px solid #007bff; /* Blue outline for focus */
+    outline-offset: 2px; /* Space between outline and button */
+}
+
+th {
+    background: var(--primary-color);
+    color: white;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+}
+
+th, td {
+    padding: 15px;
+    text-align: left;
+    color: var(--text-primary);
+}
+
+/* ------------------------------------------- */
+/* Responsive CSS for Small Screens */
+/* ------------------------------------------- */
+
+/* Hide top navbar and show bottom navbar on small screens */
+@media (max-width: 768px) {
+    .modern-navbar {
+        display: none; /* Hide traditional top navbar */
+    }
+
+    .bottom-navbar {
+        display: flex !important; /* Show bottom navbar */
+    }
+
+    .admin-container {
+        padding: 10px;
+        margin: 10px auto 70px auto; /* Add margin for bottom nav */
+    }
+
+    .hero-section-wrapper {
+        padding-top: 0; /* Adjust if hero-section has top padding from top navbar */
+    }
+
+    /* Card View for Table */
+    table { /* Changed from .responsive-table to table as per your HTML */
+        border: none; /* Remove outer table border */
+    }
+
+    table thead { /* Changed from .responsive-table to table */
+        /* Hide table headers visually but keep for screen readers */
+        border: none;
+        clip: rect(0 0 0 0);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0;
+        position: absolute;
+        width: 1px;
+    }
+
+    table tr { /* Changed from .responsive-table to table */
+        display: block; /* Make each table row a block element (the "card") */
+        margin-bottom: 15px; /* Space between cards */
+        border: 1px solid var(--border-color); /* Card border */
+        border-radius: 8px;
+        padding: 15px;
+        background-color: var(--card-bg);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+    }
+
+    table td { /* Changed from .responsive-table to table */
+        display: block; /* Make each table cell a block element */
+        text-align: right; /* Align value to the right */
+        padding-left: 45%; /* Make space for the label */
+        position: relative; /* For absolute positioning of label */
+        border: none; /* Remove cell borders */
+        padding-top: 8px;
+        padding-bottom: 8px;
+        font-size: 0.95em;
+    }
+
+    table td::before { /* Changed from .responsive-table to table */
+        /* Use pseudo-elements to create labels from data-label attributes */
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: calc(45% - 20px); /* Adjust width for proper alignment */
+        padding-right: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-weight: bold;
+        text-align: left; /* Align label to the left */
+        color: var(--text-muted);
+    }
+
+    table td hr { /* Changed from .responsive-table to table */
+        border-top: 1px solid var(--border-color);
+        margin: 8px 0;
+    }
+
+    /* Adjust button group for actions within cards */
+    .action-buttons-group {
+        display: flex;
+        flex-direction: column;
+        gap: 8px; /* Space between buttons */
+        margin-top: 10px;
+    }
+
+    .action-btn {
+        width: 100%; /* Ensure buttons take full width within the card */
+        margin: 0; /* Remove default margin to let gap control spacing */
+    }
+
+    /* Adjust overall status display in card view */
+    table td[data-label="Overall Status"] h3,
+    table td[data-label="Pixel Member Approval"] h3,
+    table td[data-label="Pixel Head Approval"] h3,
+    table td[data-label="Faculty Advisor Approval"] h3,
+    table td[data-label="Email Status"] h4 {
+        justify-content: flex-end; /* Align status text to the right, next to label */
+        padding-right: 0;
+    }
+
+    table td[data-label="Event Details"] b {
+        display: inline-block; /* Ensure bold labels align well */
+        min-width: 100px; /* Give some width to labels */
+    }
+
+    /* Footer adjustments for small screens */
+    .footer-container {
+        flex-direction: column;
+        align-items: center;
+        padding: 0 10px; /* Adjust padding for small screens */
+    }
+
+    .footer-section {
+        margin: 15px 0;
+        min-width: unset;
+        width: 100%;
+        text-align: center; /* Center footer section content */
+    }
+
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%); /* Center the underline for footer headings */
+    }
+
+    .footer-section p,
+    .footer-section ul {
+        align-items: center; /* Center items in lists/paragraphs */
+        justify-content: center; /* Center content for paragraphs */
+    }
+
+    .footer-section ul li a {
+        padding-left: 0; /* Remove left padding */
+    }
+
+    .footer-section ul li a::before {
+        display: none; /* Hide the '›' bullet on small screens */
+    }
+
+    .social-links {
+        justify-content: center; /* Center social links */
+    }
+}
+
+/* Bottom Navigation Bar */
+.bottom-navbar {
+    display: none; /* Hidden by default, shown on small screens via media query */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--primary-color); /* Dark teal */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.2);
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000;
+    box-sizing: border-box; /* Ensure padding is included in width */
+}
+
+.bottom-navbar a {
+    color: white;
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.75em;
+    padding: 5px 0;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.bottom-navbar a i {
+    font-size: 1.2em;
+    margin-bottom: 3px;
+}
+
+.bottom-navbar a.active {
+    color: var(--accent-color); /* Lighter orange for active state */
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.bottom-navbar a:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.bottom-navbar .logout-link {
+    color: rgb(255, 95, 95); /* Red for logout */
+}
+
+.bottom-navbar .logout-link.active {
+    color: rgb(255, 95, 95); /* Keep red for active logout */
+    background-color: rgba(255, 95, 95, 0.1);
+}
+
+.bottom-navbar .logout-link:hover {
+    background-color: rgba(255, 95, 95, 0.08);
+}
+
+
+.shutter-loader svg {
+  animation: rotate-shutter 2s linear infinite;
+}
+
+@keyframes rotate-shutter {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}

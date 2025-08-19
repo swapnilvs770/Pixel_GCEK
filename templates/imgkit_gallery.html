@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %}Pixel Club - Image Gallery{% endblock %}
+
+{% block extra_head %}
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500&f[]=manrope@400,600&f[]=aeonik@500&display=swap" rel="stylesheet">
+<style>
+  body {
+    background: var(--bg-color);
+    color: var(--text-primary);
+    padding: 2rem;
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.6;
+  }
+
+  h1 {
+    font-family: 'Aeonik', sans-serif;
+    text-align: center;
+    margin-bottom: 2.5rem;
+    font-size: 2.5rem;
+    color: var(--primary-color);
+  }
+
+  .albums {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .album-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--card-bg);
+    box-shadow: 0 6px 16px rgba(var(--text-primary-rgb), 0.08);
+    border: 1px solid var(--border-color);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .album-card:hover {
+    transform: scale(1.03);
+    box-shadow: 0 12px 28px rgba(var(--text-primary-rgb), 0.12);
+  }
+
+  .album-thumb img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+
+  .album-card:hover .album-thumb img {
+    transform: scale(1.05);
+  }
+
+  .overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    color: white;
+    padding: 1rem 1.25rem;
+    opacity: 0;
+    transform: translateY(100%);
+    transition: all 0.3s ease-in-out;
+    pointer-events: none;
+  }
+
+  .album-card:hover .overlay {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .overlay h3 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    margin: 0 0 0.4rem;
+    font-size: 1.15rem;
+  }
+
+  .overlay p {
+    font-size: 0.95rem;
+    margin: 0;
+    color: rgba(255,255,255,0.85);
+  }
+</style>
+
+{% endblock %}
+
+{% block content %}
+<h1>Pixel Club Gallery</h1>
+<div class="albums">
+  {% for album in albums %}
+  <a href="{{ url_for('gallery_album', index=loop.index0) }}" class="album-card">
+    <div class="album-thumb">
+      <img src="{{ (album.preview ~ (album.thumbnail or album.images[0])) | replace(' ', '%20') }}" alt="{{ album.title }}" loading="lazy">
+    </div>
+    <div class="overlay">
+      <h3>{{ album.title }}</h3>
+      <p>{{ album.date }}</p>
+      <p>{{ album.description }}</p>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% endblock %}

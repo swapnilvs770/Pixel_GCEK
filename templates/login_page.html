@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pixel Club Login/Register</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #00796B;
+            /* Deep Teal - Professional & Creative */
+            --secondary-color: #4DB6AC;
+            /* Soft Mint - Lighter complement */
+            --accent-color: #FF7043;
+            /* Vibrant Coral - Energetic pop */
+            --success-color: #4CAF50;
+            /* Emerald Green - Success */
+            --warning-color: #FFB300;
+            /* Soft Amber - Warning */
+            --bg-color: #F8F8F8;
+            /* Warm Off-White - Clean canvas */
+            --card-bg: #FFFFFF;
+            /* Pure White - Crisp content blocks */
+            --text-primary: #212121;
+            /* Charcoal Gray - Legible main text */
+            --text-muted: #757575;
+            /* Medium Gray - Muted text */
+            --border-color: #E0E0E0;
+            /* Light Gray - Subtle borders */
+            --navbar-bg: #FFFFFF;
+            /* White for navbar in light mode */
+            --navbar-text: var(--text-primary);
+        }
+
+        body {
+            font-family: 'Rubik', sans-serif;
+            /* Kept 'Rubik' from original CSS, changed from 'Segoe UI' */
+            background: linear-gradient(to right, #ddeaf6, var(--card-bg));
+            /* Adjusted with var(--card-bg) */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: var(--text-primary);
+            /* Added for overall text color */
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.15);
+            position: relative;
+            width: 900px;
+            max-width: 100%;
+            min-height: 550px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .form-container {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            transition: all 0.6s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50%;
+            padding: 0 50px;
+            background: var(--card-bg);
+            /* Changed from #fff */
+            z-index: 1;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+        }
+
+        .sign-in-container {
+            left: 0;
+            z-index: 2;
+        }
+
+        .sign-up-container {
+            left: 0;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .container.right-panel-active .sign-in-container {
+            transform: translateX(100%);
+        }
+
+        .container.right-panel-active .sign-up-container {
+            transform: translateX(100%);
+            opacity: 1;
+            z-index: 5;
+        }
+
+        form {
+            width: 100%;
+            text-align: center;
+        }
+
+        input {
+            background: var(--bg-color);
+            /* Changed from #eee */
+            border: none;
+            padding: 12px 15px;
+            margin: 8px 0;
+            width: 100%;
+            border-radius: 5px;
+            color: var(--text-primary);
+            /* Ensures input text is readable */
+        }
+
+        button {
+            border-radius: 20px;
+            border: none;
+            background-color: var(--primary-color);
+            /* Changed from #4b7bec */
+            color: var(--card-bg);
+            /* Changed from #ffffff (assuming card-bg is white) */
+            font-size: 14px;
+            padding: 12px 45px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: transform 80ms ease-in;
+        }
+
+        button.ghost {
+            background-color: transparent;
+            border: 1px solid var(--card-bg);
+            /* Changed from #fff */
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+            border-radius: 0;
+        }
+
+        .container.left-panel-active .overlay-container {
+            border-top-left-radius: 150px;
+            border-bottom-left-radius: 150px;
+        }
+
+        .container.right-panel-active .overlay-container {
+
+            border-top-right-radius: 150px;
+            border-bottom-right-radius: 150px;
+        }
+
+        .overlay {
+            background: var(--primary-color);
+            /* Changed from #4b7bec and #4d7cff */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: var(--card-bg);
+            /* Changed from #fff */
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+            border-radius: 0 400px 400px 0;
+            /* Kept the existing border-radius for .overlay */
+        }
+
+
+
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+        }
+
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-left {
+            transform: translateX(-20%);
+            left: 0;
+        }
+
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .logo {
+            width: 120px;
+            margin: 10px auto 20px;
+            display: block;
+            box-shadow: #757575;
+        }
+
+        form input {
+            margin: 0px 0;
+            padding: 14px 18px;
+            font-size: 12px;
+        }
+
+        button {
+            padding: 14px 35px;
+            font-size: 15px;
+            margin: 15px 0 5px;
+        }
+
+        .input-icon {
+            position: relative;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        .input-icon input {
+            width: 100%;
+            padding: 12px 12px 12px 40px;
+            border-radius: 5px;
+            border: none;
+            background: var(--bg-color);
+            /* Changed from #eee */
+        }
+
+        .input-icon i {
+            position: absolute;
+            top: 50%;
+            left: 12px;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            /* Changed from #777 */
+        }
+
+        /* The .overlay-container and .overlay rules were duplicated,
+   keeping the latest set and adjusting colors. */
+        .overlay-container {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            overflow: hidden;
+            transition: transform 0.6s ease-in-out;
+            z-index: 100;
+        }
+
+        .container.right-panel-active .overlay-container {
+            transform: translateX(-100%);
+        }
+
+        .overlay {
+            background: var(--primary-color);
+            /* Changed from #4d7cff */
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            color: var(--card-bg);
+            /* Changed from #ffffff */
+            position: relative;
+            left: -100%;
+            height: 100%;
+            width: 200%;
+            transform: translateX(180);
+            transition: transform .6s ease-in-out;
+            border-radius: 0 0 0 400px;
+        }
+
+        .container.right-panel-active .overlay {
+            transform: translateX(50%);
+            border-radius: 0px 400px 400px 0;
+        }
+
+        .overlay-panel {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0 40px;
+            text-align: center;
+            top: 0;
+            height: 100%;
+            width: 50%;
+            transform: translateX(0);
+            transition: transform 0.6s ease-in-out;
+        }
+
+        .overlay-left {
+            transform: translateX(-20%);
+        }
+
+        .container.right-panel-active .overlay-left {
+            transform: translateX(0);
+        }
+
+        .overlay-right {
+            right: 0;
+            transform: translateX(0);
+        }
+
+        .container.right-panel-active .overlay-right {
+            transform: translateX(20%);
+        }
+
+        .overlay-panel {
+            animation: fadeIn 1s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 📱 Responsive - Premium Look */
+        @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                padding: 20px;
+                height: auto;
+                background: var(--bg-color);
+                /* Changed from #f5f7fa */
+            }
+
+            .container {
+                flex-direction: column;
+                width: 100%;
+                max-width: 95%;
+                height: auto;
+                border-radius: 12px;
+                box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+                overflow: visible;
+                position: relative;
+            }
+
+            .form-container,
+            .overlay-container {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                padding: 30px 20px;
+                opacity: 1 !important;
+                transform: none !important;
+                z-index: auto;
+                border-radius: 0;
+            }
+
+            .sign-in-container,
+            .sign-up-container {
+                transform: none !important;
+            }
+
+            .overlay {
+                display: none;
+            }
+
+            form {
+                padding: 10px;
+            }
+
+            input {
+                padding: 14px 15px;
+                font-size: 16px;
+            }
+
+            button {
+                width: 100%;
+                padding: 14px;
+                font-size: 15px;
+                margin-top: 16px;
+            }
+
+            .input-icon {
+                margin: 6px 0;
+            }
+
+            .logo {
+                width: 60px;
+            }
+
+            .overlay-panel {
+                display: none;
+            }
+        }
+
+        .fancy-loader {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            top: 0;
+            left: 0;
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lds-ellipsis {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ellipsis div {
+            position: absolute;
+            top: 33px;
+            width: 13px;
+            height: 13px;
+            border-radius: 50%;
+            background: var(--secondary-color);
+            /* Changed from rgb(0, 187, 255) */
+            animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+
+        .lds-ellipsis div:nth-child(1) {
+            left: 8px;
+            animation: lds-ellipsis1 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(2) {
+            left: 8px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(3) {
+            left: 32px;
+            animation: lds-ellipsis2 0.6s infinite;
+        }
+
+        .lds-ellipsis div:nth-child(4) {
+            left: 56px;
+            animation: lds-ellipsis3 0.6s infinite;
+        }
+
+        @keyframes lds-ellipsis1 {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes lds-ellipsis2 {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(24px);
+            }
+        }
+
+        @keyframes lds-ellipsis3 {
+            0% {
+                transform: scale(1);
+            }
+
+            100% {
+                transform: scale(0);
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+
+
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <!-- Fancy Loader: Dropping Dots -->
+    <div id="loader" class="fancy-loader">
+        <div class="lds-ellipsis">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    <div class="container" id="container">
+        <!-- Registration Form -->
+        <div class="form-container sign-up-container">
+            <form id="registerForm">
+
+
+                <img src="/static/images/logo-black.png" alt="Logo" class="logo" />
+                <h1 style="margin: 0; padding-top: 0;">Register</h1>
+
+
+                <div class="input-icon">
+                    <input type="text" id="username" name="username" placeholder="Username" required />
+
+                </div>
+
+                <div class="input-icon">
+                    <input type="email" id="email" name="email" placeholder="User Mail ID" required />
+                </div>
+
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="password" name="password" placeholder="Password" required />
+                </div>
+
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="confirmPassword" name="confirm_password" placeholder="Confirm Password"
+                        required />
+                </div>
+
+                <div class="input-icon">
+                    <i class="bi bi-envelope-open-fill"></i>
+                    <input type="text" id="otp" name="otp" placeholder="OTP" autocomplete="one-time-code" required />
+                    <p id="otpTimer" style="display: none; font-weight: bold; color: #333;"></p>
+                </div>
+
+
+                <!-- Dynamic Buttons -->
+                <button type="button" id="sendOtpBtn">Send OTP</button>
+                <button type="button" id="verifyOtpBtn" style="display: none;">Verify OTP</button>
+                <button type="submit" id="registerBtn" disabled style="display: none;">Register</button>
+            </form>
+        </div>
+
+
+        <!-- Login Form -->
+        <div class="form-container sign-in-container">
+            <form id="loginForm" method="POST">
+                <img src="/static/images/logo-black.png" alt="Logo" class="logo" />
+                <h1>Login</h1>
+                <input type="text" id="loginEmail" name="email" placeholder="User Mail ID" required
+                    style="margin: 8px 0;padding: 12px 15px;" />
+                <input type="password" id="loginPassword" name="password" placeholder="Password" required />
+
+                <a href="#" id="forgotPasswordLink"
+                    style="display: block; text-align: right; font-size: 0.9em; margin-top: 5px; color: var(--primary-color);">Forgot
+                    password?</a>
+
+                <button type="submit">Login</button>
+                <br>
+                <button onclick="window.location.href='{{ url_for('index') }}'" class="home-btn">
+                    Return To Home Page
+                </button>
+
+                <footer style="text-align:center; font-size:12px; margin-top:20px; color:#999;">
+                    &copy; <span id="currentYear"></span> PIXEL CLUB - All rights reserved | GCE Karad
+                </footer>
+            </form>
+
+
+        </div>
+
+        <!-- Slide Panel -->
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-right">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected to the PIXEL CLUB, please login</p>
+                    <p>Are You new User?</p>
+                    <button class="ghost" id="signIn">Register Here</button>
+                </div>
+                <div class="overlay-panel overlay-left">
+                    <h1>Hello, GCEK Fam!!</h1>
+                    <p>Enter your details and start your journey with PIXEL CLUB</p>
+                    <button class="ghost" id="signUp">Back to Login</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const yearSpan = document.getElementById('currentYear');
+            const currentYear = new Date().getFullYear();
+            yearSpan.textContent = currentYear;
+        });
+    </script>
+    <!-- Forget Password Script   -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Update year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // Loader functions
+            function showLoader() {
+                document.getElementById('loader').style.display = 'flex';
+            }
+            function hideLoader() {
+                document.getElementById('loader').style.display = 'none';
+            }
+
+            // Panel toggle
+            const signUpButton = document.getElementById('signUp');
+            const signInButton = document.getElementById('signIn');
+            const container = document.getElementById('container');
+            container.classList.add('left-panel-active');
+            signInButton.addEventListener('click', () => {
+                container.classList.add('right-panel-active');
+                container.classList.remove('left-panel-active');
+            });
+            signUpButton.addEventListener('click', () => {
+                container.classList.remove('right-panel-active');
+                container.classList.add('left-panel-active');
+            });
+
+            // Forgot Password
+            const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+            forgotPasswordLink.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: "Forgot Password",
+                    input: "email",
+                    inputLabel: "Enter your registered email address",
+                    inputPlaceholder: "Your Email ID",
+                    showCancelButton: true,
+                    confirmButtonText: "Send Reset OTP",
+                    showLoaderOnConfirm: true,
+                    preConfirm: async (email) => {
+                        if (!email || !email.includes('@')) {
+                            Swal.showValidationMessage("Please enter a valid email address.");
+                            return false;
+                        }
+                        if (!email.endsWith('@gcekarad.ac.in')) {
+                            Swal.showValidationMessage("Only @gcekarad.ac.in emails are allowed.");
+                            return false;
+                        }
+                        try {
+                            const response = await fetch('/forgot_password_request_otp', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: new URLSearchParams({ email: email })
+                            });
+                            if (!response.ok) {
+                                const errorText = await response.text();
+                                throw new Error(errorText || 'Failed to send OTP.');
+                            }
+                            return email; // Correct: return the validated email
+                        } catch (error) {
+                            Swal.showValidationMessage(`Request failed: ${error}`);
+                        }
+                    },
+                    allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        const userEmail = result.value;
+                        Swal.fire({
+                            title: "OTP Sent!",
+                            text: `OTP sent to ${userEmail}. Now enter the OTP and new password.`,
+                            icon: "success"
+                        }).then(() => {
+                            showResetPasswordForm(userEmail);
+                        });
+                    }
+                });
+
+                async function showResetPasswordForm(userEmail) {
+                    const { value: formValues } = await Swal.fire({
+                        title: "Reset Password",
+                        html:
+                            `<input type="email" id="swal-email" class="swal2-input" placeholder="Your Email" value="${userEmail}" readonly>` +
+                            `<input type="text" id="swal-otp" class="swal2-input" placeholder="Enter OTP">` +
+                            `<input type="password" id="swal-new-password" class="swal2-input" placeholder="New Password">` +
+                            `<input type="password" id="swal-confirm-new-password" class="swal2-input" placeholder="Confirm New Password">`,
+                        focusConfirm: false,
+                        showCancelButton: true,
+                        confirmButtonText: "Reset Password",
+                        preConfirm: () => {
+                            const otp = document.getElementById('swal-otp').value;
+                            const newPassword = document.getElementById('swal-new-password').value;
+                            const confirmPassword = document.getElementById('swal-confirm-new-password').value;
+
+                            if (!otp || !newPassword || !confirmPassword) {
+                                Swal.showValidationMessage("Please fill in all fields.");
+                                return false;
+                            }
+                            if (newPassword !== confirmPassword) {
+                                Swal.showValidationMessage("Passwords do not match.");
+                                return false;
+                            }
+                            return {
+                                email: userEmail,
+                                otp: otp,
+                                new_password: newPassword
+                            };
+                        }
+                    });
+
+                    if (formValues) {
+                        try {
+                            showLoader();
+                            const response = await fetch('/reset_password_confirm', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: new URLSearchParams(formValues)
+                            });
+
+                            if (!response.ok) {
+                                const errorText = await response.text();
+                                throw new Error(errorText || 'Failed to reset password.');
+                            }
+                            const successText = await response.text();
+                            Swal.fire("Success!", successText, "success");
+                        } catch (error) {
+                            Swal.fire("Error!", `Password reset failed: ${error.message}`, "error");
+                        } finally {
+                            hideLoader();
+                        }
+                    }
+                }
+            });
+
+            // Registration OTP
+            const emailInput = document.getElementById('email');
+            const usernameInput = document.getElementById('username');
+            const sendOtpBtn = document.getElementById('sendOtpBtn');
+            const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+            const registerBtn = document.getElementById('registerBtn');
+            const otpInput = document.getElementById('otp');
+            const otpTimer = document.getElementById('otpTimer');
+
+            let countdownInterval;
+            let otpAttempts = 0;
+            const maxAttempts = 3;
+
+            function isValidGcekEmail(email) {
+                return /^[a-z._%+-]+@gcekarad\.ac\.in$/.test(email);
+            }
+
+            function startOtpTimer(duration = 120) {
+                let timeLeft = duration;
+                otpTimer.style.display = 'block';
+                otpTimer.textContent = `OTP expires in ${timeLeft} seconds`;
+                countdownInterval = setInterval(() => {
+                    timeLeft--;
+                    otpTimer.textContent = `OTP expires in ${timeLeft} seconds`;
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        otpTimer.textContent = 'OTP expired. Please request again.';
+                        verifyOtpBtn.style.display = 'none';
+                        sendOtpBtn.style.display = 'inline-block';
+                        sendOtpBtn.disabled = false;
+                        otpInput.value = '';
+                    }
+                }, 1000);
+            }
+
+            sendOtpBtn.addEventListener('click', async () => {
+                const email = emailInput.value;
+                const username = usernameInput.value;
+
+                if (!isValidGcekEmail(email)) {
+                    Swal.fire("Invalid Email", "Only @gcekarad.ac.in emails are allowed.", "error");
+                    return;
+                }
+                if (!username) {
+                    Swal.fire("Missing Username", "Please enter your name.", "error");
+                    return;
+                }
+
+                try {
+                    showLoader();
+                    const response = await fetch('/send_otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ email, username })
+                    });
+
+                    const result = await response.text();
+                    if (response.ok) {
+                        Swal.fire("OTP Sent", result, "success");
+                        sendOtpBtn.style.display = 'none';
+                        verifyOtpBtn.style.display = 'inline-block';
+                        sendOtpBtn.disabled = true;
+                        otpAttempts = 0;
+                        startOtpTimer();
+                    } else {
+                        Swal.fire("Failed", result, "error");
+                    }
+                } catch (err) {
+                    Swal.fire("Error", "Something went wrong. Try again.", "error");
+                } finally {
+                    hideLoader();
+                }
+            });
+
+            verifyOtpBtn.addEventListener('click', async () => {
+                const otp = otpInput.value;
+                const password = document.getElementById('password').value;
+                const confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (!otp || !password || !confirmPassword) {
+                    Swal.fire("Missing Fields", "Please enter OTP and passwords.", "warning");
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    Swal.fire("Mismatch", "Passwords do not match.", "warning");
+                    return;
+                }
+
+                try {
+                    showLoader();
+                    const response = await fetch('/verify_otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({ otp, password, confirm_password: confirmPassword })
+                    });
+
+                    const result = await response.text();
+                    if (response.ok) {
+                        Swal.fire({
+                            title: "Verified",
+                            text: "OTP is correct. You can now login!",
+                            icon: "success",
+                            timer: 2000,
+                            showConfirmButton: false
+                        }).then(() => window.location.href = "/user_login");
+                    } else {
+                        otpAttempts++;
+                        Swal.fire("Invalid OTP", `Attempt ${otpAttempts}/${maxAttempts}`, "error");
+                        if (otpAttempts >= maxAttempts) {
+                            Swal.fire("Too Many Attempts", "Form locked. Reload to retry.", "error");
+                            verifyOtpBtn.disabled = true;
+                            sendOtpBtn.disabled = true;
+                            otpInput.disabled = true;
+                        } else {
+                            otpInput.value = '';
+                        }
+                    }
+                } catch (err) {
+                    Swal.fire("Error", "Something went wrong. Try again.", "error");
+                } finally {
+                    hideLoader();
+                }
+            });
+
+            document.getElementById("registerForm").addEventListener("submit", function (e) {
+                if (registerBtn.disabled) {
+                    e.preventDefault();
+                    Swal.fire("Not Allowed", "Please verify OTP before registering.", "warning");
+                }
+            });
+
+            otpInput.addEventListener('paste', function (e) {
+                const pasted = (e.clipboardData || window.clipboardData).getData('text');
+                if (/^\d{4,6}$/.test(pasted)) {
+                    otpInput.value = pasted;
+                    e.preventDefault();
+                }
+            });
+
+            // Login handler
+            const loginForm = document.getElementById('loginForm');
+            if (loginForm) {
+                loginForm.addEventListener('submit', async function (e) {
+                    e.preventDefault();
+                    const loginEmail = document.getElementById('loginEmail').value;
+                    const loginPassword = document.getElementById('loginPassword').value;
+
+                    if (!loginEmail || !loginPassword) {
+                        Swal.fire("Missing Fields", "Please enter both email and password.", "warning");
+                        return;
+                    }
+
+                    try {
+                        showLoader();
+                        const response = await fetch('/user_login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                            body: new URLSearchParams({ email: loginEmail, password: loginPassword })
+                        });
+
+                        const resultText = await response.text();
+                        if (response.redirected) {
+                            window.location.href = response.url;
+                        } else {
+                            Swal.fire("Login Failed", resultText, "error");
+                        }
+                    } catch (err) {
+                        Swal.fire("Error", "Something went wrong during login.", "error");
+                    } finally {
+                        hideLoader();
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

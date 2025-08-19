@@ -1,0 +1,181 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Equipment Requests{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+  <h2>📥 Equipment Requests</h2>
+  <p style="display: flex; justify-content:center; align-items:center;" class="status-info">Manage equipment requests from Club Members</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Equipment</th>
+        <th>Requester</th>
+        <th>Purpose</th>
+        <th>Requested Date</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in requests %}
+      <tr>
+        <td data-label="Equipment">{{ r.equipment_name }}</td>
+        <td data-label="Requester">{{ r.requester_name }}</td>
+        <td data-label="Purpose">{{ r.purpose }}</td>
+        <td data-label="Requested Date">{{ r.requested_date }}</td>
+        <td data-label="Status">
+          {% if r.status == 'Approved' %}
+          <span class="approved">Approved</span>
+          {% elif r.status == 'Rejected' %}
+          <span class="rejected">Rejected</span>
+          {% else %}
+          <span class="pending">Pending</span>
+          {% endif %}
+        </td>
+        <td data-label="Actions">
+          {# Logic for Super Admin (Pixel Head) Approval #}
+          {% if r.pixel_head_approval_status == 'pending' and admin_role == 'super_admin' %}
+          <button type="button" class="admin-button primary action-btn accept-btn"
+            onclick="sendRequest({{ r.id }}, 'approve', 'pixel_head')">✅ Approve as Head</button>
+          <button type="button" class="admin-button secondary action-btn reject-btn"
+            onclick="sendRequest({{ r.id }}, 'reject', 'pixel_head')">❌ Reject as Head</button>
+          {# Logic for Faculty Advisor Approval #}
+          {% elif r.faculty_advisor_approval_status == 'pending' and admin_role == 'faculty_advisor' %}
+          <button type="button" class="admin-button primary action-btn accept-btn"
+            onclick="sendRequest({{ r.id }}, 'approve', 'faculty_advisor')">✅ Approve as Advisor</button>
+          <button type="button" class="admin-button secondary action-btn reject-btn"
+            onclick="sendRequest({{ r.id }}, 'reject', 'faculty_advisor')">❌ Reject as Advisor</button>
+          {# Logic for Pixel Member Approval #}
+          {% elif r.pixel_member_approval_status == 'pending' and admin_role == 'pixel_member' %}
+          <button type="button" class="admin-button primary action-btn accept-btn"
+            onclick="sendRequest({{ r.id }}, 'approve', 'pixel_member')">✅ Approve as Member</button>
+          <button type="button" class="admin-button secondary action-btn reject-btn"
+            onclick="sendRequest({{ r.id }}, 'reject', 'pixel_member')">❌ Reject as Member</button>
+          {% else %}
+          <span class="status-info">No pending actions for your role.</span>
+          {% endif %}
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <script>
+    async function sendRequest(requestId, action, role) {
+      const url = `/equipment_requests/${requestId}/${action}/${role}`;
+      const actionText = action.charAt(0).toUpperCase() + action.slice(1); // "Approve" or "Reject"
+      const confirmText = action === 'approve' ? `Yes, ${actionText} it!` : `Yes, ${actionText} it!`;
+
+      try {
+        const result = await Swal.fire({
+          title: `Are you sure?`,
+          text: `You are about to ${action} this request as ${role.replace('_', ' ')}.`,
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: action === 'approve' ? '#28a745' : '#d33',
+          cancelButtonColor: '#6c757d',
+          confirmButtonText: confirmText
+        });
+
+        if (result.isConfirmed) {
+          const response = await fetch(url, { method: 'POST' });
+          const data = await response.json();
+
+          if (data.status === 'success') {
+            Swal.fire(`${actionText}d ✅`, data.message, 'success').then(() => {
+              location.reload();
+            });
+          } else if (data.status === 'info') { // New status for intermediate approvals
+            Swal.fire(`${actionText}d ℹ️`, data.message, 'info').then(() => {
+              location.reload();
+            });
+          } else if (data.status === 'warning') {
+            Swal.fire(`${actionText}d with Warning ⚠️`, data.message, 'warning').then(() => {
+              location.reload();
+            });
+          } else {
+            Swal.fire("Error ❌", data.message, "error");
+          }
+        }
+      } catch (error) {
+        console.error('Network error:', error);
+        Swal.fire("Error ❌", `An error occurred: ${error.message}`, "error"); // Use Swal for network errors too
+      }
+    }
+  </script>
+
+  <style>
+    /* Basic styling for buttons and status indicators */
+    .admin-button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-right: 5px;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .admin-button.primary {
+      background-color: var(--success-color); /* Green for approve/issue */
+      color: white;
+    }
+
+    .admin-button.primary:hover {
+      background-color: #45a049;
+    }
+
+    .admin-button.secondary {
+      background-color: var(--accent-color); /* Red for reject */
+      color: white;
+    }
+
+    .admin-button.secondary:hover {
+      background-color: #da190b;
+    }
+
+    .approved {
+      color: var(--success-color);
+      font-weight: bold;
+    }
+
+    .pending {
+      color: var(--warning-color);
+      font-weight: bold;
+    }
+
+    .rejected {
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    .status-info {
+      color: var(--text-muted);
+      font-style: italic;
+      font-size: 0.9em;
+    }
+
+    /* Responsive adjustments for action buttons within table cards */
+    @media (max-width: 768px) {
+      table td[data-label="Actions"] {
+        text-align: left; /* Align actions to the left within the card */
+        padding-left: 10px; /* Adjust padding */
+      }
+
+      table td[data-label="Actions"] .admin-button {
+        display: block; /* Stack action buttons vertically */
+        width: calc(100% - 10px); /* Full width within the card */
+        margin: 5px 0; /* Add vertical margin between buttons */
+        text-align: center; /* Center text in buttons */
+      }
+
+      table td[data-label="Actions"] .status-info {
+        text-align: center;
+        display: block;
+        margin-top: 10px;
+      }
+    }
+  </style>
+</div>
+{% endblock %}

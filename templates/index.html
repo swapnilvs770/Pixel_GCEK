@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Home | Pixel Club{% endblock %}
+
+{% block style %}
+/* Add specific styles like .gallery, .gallery-container etc. here */
+<link rel="stylesheet" href="../static/styles.css">
+{% endblock %}
+{% block hero_content %}
+<div class="hero-section">
+    <div class="hero-content">
+        <p class="college-name">GOVT. COLLEGE OF ENGINEERING KARAD</p>
+        <h1 class="club-name">PIXEL CLUB</h1>
+        <h2 class="dynamic-tagline">Film. Craft. Inspire.</h2> <p class="moto">We capture the heartbeat of campus life - preserving your college memories through our lens.</p>
+        
+    </div>
+</div>
+
+
+
+<section id="index_page_gallery" class="index_page_gallery">
+  <h2 class="index_page_our_work_title">Our Recent Events</h2>
+  <div class="index_page_gallery_container">
+    {% for album in albums[:7] %}
+    <div class="index_page_album_card">
+      <div class="index_page_album_thumb">
+        <img
+          src="{{ (album.preview ~ (album.thumbnail or album.images[0])) | replace(' ', '%20') }}"
+          alt="{{ album.title }}"
+          loading="lazy"
+        >
+        <div class="index_page_album_overlay">
+          <span class="index_page_album_title">{{ album.title }}</span>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+
+
+
+<div class="see-more-container">
+    <a href="{{ url_for('imgkit_gallery') }}">
+        <button id="button-container">
+            See More
+        </button>
+    </a>
+
+</div>
+<section id="team">
+    <h2 class="section-title">Meet Our Team</h2>
+    {% if team_members %}
+    <div class="team-container">
+        {% for member in team_members %}
+        <div class="team-member">
+            <img src="{{ url_for('static', filename='images/' + (member.photo or 'default.jpg')) }}" alt="{{ member.name }}">
+            <h3>{{ member.name or 'No Name' }}</h3>
+
+            <p>
+        {% if member.role == 'super_admin' %}
+            Pixel Head
+        {% elif member.role == 'co_admin' %}
+            Pixel Member
+        {% else %}
+            {{ member.role.replace('_', ' ').title() }}
+        {% endif %}
+    </p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align:center;">No team members to display yet.</p>
+    {% endif %}
+</section>
+
+
+<section id="contact">
+    <h2 class="section-title">Contact Us</h2>
+    <div class="contact-container">
+        <a href="https://www.instagram.com/pixelgcek/" target="_blank" class="instagram-link">
+            <img src="{{ url_for('static', filename='images/instagram-logo.png') }}" alt="Instagram Logo"
+                class="instagram-logo">
+            <span class="instagram-name">pixelgcek</span>
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block script %}
+<script>
+    // Fetch gallery images
+    
+
+    // Tagline animation
+    const taglines = [
+        "Film. Craft. Inspire."
+    ];
+
+    const taglineElement = document.querySelector('.dynamic-tagline');
+    let currentIndex = 0;
+
+  
+
+    function deleteText(cb) {
+        const length = taglineElement.innerHTML.length;
+        if (length > 0) {
+            taglineElement.innerHTML = taglineElement.innerHTML.substring(0, length - 1);
+            setTimeout(() => deleteText(cb), 50);
+        } else {
+            currentIndex = (currentIndex + 1) % taglines.length;
+            setTimeout(cb, 500);
+        }
+    }
+
+    function animateTagline() {
+        typeWriter(taglines[currentIndex], 0, () => {
+            setTimeout(() => deleteText(animateTagline), 1500);
+        });
+    }
+
+    animateTagline();
+</script>
+{% endblock %}

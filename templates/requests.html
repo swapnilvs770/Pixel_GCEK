@@ -1,0 +1,267 @@
+{% extends 'base_admin.html' %}
+
+{% block title %}Admin Permissions - Pixel Club{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>Pending Permissions</h2>
+
+    {% if permissions %}
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event </Details>
+                </th>
+                <th>Overall Status</th>
+                <th>Pixel Member Approval</th>
+                <th>Pixel Head Approval</th>
+                <th>Faculty Advisor Approval</th>
+                <th>Email Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td>{{ req.id }}
+                </td>
+                <td><b>Request Submit By:</b>{{ req.user_name }}
+                    <hr><b>Club Name:</b>{{ req.club }}
+                    <hr><b>Request Date:</b>{{ req.request_date}}
+                    <hr>
+                    <Details>
+
+                        <hr><b>Request Time:</b>{{ req.request_time }}
+                        <hr><b>Event Location</b>{{ req.location }}
+                        <hr><b>Contact No:</b>{{ req.contact_no }}
+                    </Details>
+                </td>
+                <td>
+                    {% if req.status == 'approved' %} <h3
+                        style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">
+                        Approved</h3>
+                    {% elif req.status == 'rejected' %} <h3 style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                    {% else %} ⏳ Pending
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+                       
+                        {% if req.pixel_member_approval_status == 'approved' %}<h3
+                            style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">
+                            Approved</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.pixel_member_approval_by %} {% if req.pixel_member_approval_time %}
+                    <details>
+                        <div><strong>By:</strong> {{ req.pixel_member_approval_by }}</div>
+                        <hr><div><strong>Time:</strong> {{ req.pixel_member_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if req.pixel_member_approval_status == 'pending' and admin_role == 'co_admin' %}
+                    <button type="button" class="action-btn accept-btn"
+                        onclick="sendRequest({{ req.id }}, 'approve', 'pixel_member')">Accept</button>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+                        
+                        {% if req.pixel_head_approval_status == 'approved' %} <h3
+                            style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">
+                            Approved</h3>
+                        {% elif req.pixel_head_approval_status == 'rejected' %} <h3
+                            style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.pixel_head_approval_by %} {% if req.pixel_head_approval_time %}
+                    <details>
+                        <div><strong>By:</strong> {{ req.pixel_head_approval_by }}</div>
+                        <hr><div><strong>Time:</strong> {{ req.pixel_head_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if req.pixel_head_approval_status == 'pending' and admin_role == 'super_admin' %}
+                    <button type="button" class="action-btn accept-btn"
+                        onclick="sendRequest({{ req.id }}, 'approve', 'pixel_head')">Accept</button>
+                    <button type="button" class="action-btn reject-btn"
+                        onclick="sendRequest({{ req.id }}, 'reject', 'pixel_head')">Reject</button>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+
+                        {% if req.faculty_advisor_approval_status == 'approved' %} <h3
+                            style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">
+                            Approved</h3>
+                        {% elif req.faculty_advisor_approval_status == 'rejected' %} <h3
+                            style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.faculty_advisor_approval_by %} {% if req.faculty_advisor_approval_time %}
+                    <details>
+                        <hr>
+
+                        <div><strong>By:</strong> {{ req.faculty_advisor_approval_by }}</div>
+                        <hr>
+                        <div><strong>Time:</strong> {{ req.faculty_advisor_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if req.faculty_advisor_approval_status == 'pending' and admin_role == 'super_admin' %}
+                    <button type="button" class="action-btn accept-btn"
+                        onclick="sendRequest({{ req.id }}, 'approve', 'faculty_advisor')">Accept</button>
+                    <button type="button" class="action-btn reject-btn"
+                        onclick="sendRequest({{ req.id }}, 'reject', 'faculty_advisor')">Reject</button>
+                    {% endif %}
+                </td>
+                <td>
+                    <div>
+                       
+                        {% if req.email_notification_status == 'Sent' %}<h4 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Eamil Send Successfully</h4>
+                        <hr>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.email_notification_status == 'Sent' %}
+                    <Details>
+                        <div><strong>Clg Verified Mail</strong> {{ req.Clg_Mail}}</div>
+                        <hr>
+                        <div><strong>Mail send To:</strong> {{ req.email_id}}</div>
+                    </Details>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+        <p>No pending permission requests.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmApprove(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to approve this request?",
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#28a745',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, approve it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
+            }
+        });
+        return false;
+    }
+
+    function confirmReject(event) {
+        event.preventDefault();
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You want to reject this request?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc3545',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Yes, reject it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                event.target.submit();
+            }
+        });
+        return false;
+    }
+</script>
+{% endblock %}
+
+{% block head %}
+<style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: #fff;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+        padding: 14px 18px;
+        text-align: left;
+        border: 1px solid #ddd;
+        font-size: 14px;
+    }
+
+    th {
+        background-color: #007bff;
+        color: white;
+        text-transform: uppercase;
+        font-weight: 600;
+    }
+
+    tbody tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tbody tr:hover {
+        background-color: #e6f0ff;
+    }
+
+    button {
+        background-color: #28a745;
+        border: none;
+        color: white;
+        padding: 8px 14px;
+        margin: 2px;
+        font-size: 13px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+        background-color: #218838;
+    }
+
+    form[action*="reject"] button {
+        background-color: #dc3545;
+    }
+
+    form[action*="reject"] button:hover {
+        background-color: #c82333;
+    }
+
+    .admin-container {
+        margin: 30px auto;
+        padding: 30px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        max-width: 1200px;
+    }
+
+    .admin-container h2 {
+        color: #007bff;
+        font-size: 24px;
+        margin-bottom: 20px;
+    }
+
+    td span {
+        font-weight: bold;
+        text-transform: capitalize;
+    }
+</style>
+{% endblock %}

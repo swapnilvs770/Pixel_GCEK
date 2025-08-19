@@ -1,0 +1,13 @@
+Flask
+Werkzeug
+bcrypt
+mysql-connector-python
+python-dotenv
+reportlab
+Pillow
+imagekitio
+Flask-SQLAlchemy
+google-api-python-client
+google-auth
+google-auth-oauthlib
+google-auth-httplib2

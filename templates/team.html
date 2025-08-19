@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}Our Team - Pixel Club{% endblock %}
+
+{% block content %}
+    <section id="team">
+    <h2 class="section-title">Meet Our Team</h2>
+    {% if team_members %}
+    <div class="team-container">
+        {% for member in team_members %}
+        <div class="team-member">
+            <img src="{{ url_for('static', filename='images/' + (member.photo or 'default.jpg')) }}" alt="{{ member.name }}">
+            <h3>{{ member.name or 'No Name' }}</h3>
+            <p>{{ member.role.replace('_', ' ').title() }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p style="text-align:center;">No team members to display yet.</p>
+    {% endif %}
+</section>
+
+{% endblock %}

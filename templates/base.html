@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Pixel Club{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/logo-black.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Lora&family=Poppins:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% block extra_head %}{% endblock %}
+
+</head>
+
+<body>
+    <div id="loaderOverlay" class="loader-overlay">
+        <div class="focus-ring-loader"></div>
+    </div>
+    <div class="hero-section-wrapper">
+
+        <nav class="modern-navbar">
+            <div class="nav-logo">
+                <a id="admin-logo" href="{{ url_for('admin_login') }}">
+                    <img src="../static/images/logo-white.png" alt="Admin Logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('index') }}"
+                        class="{% if request.endpoint == 'index' %}active{% endif %}">Home</a></li>
+                <li><a href="{{ url_for('imgkit_gallery') }}"
+                        class="{% if request.endpoint == 'imgkit_gallery' %}active{% endif %}">Gallery</a></li>
+                <li><a href="{{ url_for('team') }}"
+                        class="{% if request.endpoint == 'team' %}active{% endif %}">Team</a></li>
+                <li><a href="{{ url_for('permissions') }}"
+                        class="{% if request.endpoint == 'permissions' %}active{% endif %}">Permission</a></li>
+                {% if session.get('user_logged_in') %}
+                <li>
+                    <form action="{{ url_for('user_logout') }}" method="post" style="display:inline;">
+                        <button type="submit" class="logout-btn">Log Out</button>
+                    </form>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        {% block hero_content %}{% endblock %}
+
+    </div>
+    <nav class="bottom-mobile-nav">
+        <a href="{{ url_for('index') }}" class="nav-item {% if request.endpoint == 'index' %}active{% endif %}">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="{{ url_for('imgkit_gallery') }}"
+            class="nav-item {% if request.endpoint == 'imgkit_gallery' %}active{% endif %}">
+            <i class="fas fa-images"></i>
+            <span>Gallery</span>
+        </a>
+        <a href="{{ url_for('team') }}" class="nav-item {% if request.endpoint == 'team' %}active{% endif %}">
+            <i class="fas fa-users"></i>
+            <span>Team</span>
+        </a>
+        <a href="{{ url_for('permissions') }}"
+            class="nav-item {% if request.endpoint == 'permissions' %}active{% endif %}">
+            <i class="fas fa-user-check"></i>
+            <span>Permission</span>
+        </a>
+        {% if session.get('user_logged_in') %}
+        <a href="{{ url_for('user_logout') }}" class="nav-item"
+            onclick="event.preventDefault(); document.getElementById('mobile-logout-form').submit();">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Logout</span>
+        </a>
+        <form id="mobile-logout-form" action="{{ url_for('user_logout') }}" method="post" style="display:none;"></form>
+        {% endif %}
+    </nav>
+
+    {% block content %}{% endblock %}
+
+    <button id="back-to-top" title="Go to top">↑</button>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <p><i class="fas fa-envelope"></i> pixelclub.gcek@gmail.com</p>
+
+                <p><i class="fas fa-map-marker-alt"></i>Government College of Enginnering, Karad</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">Home</a></li>
+                    <li><a href="{{ url_for('imgkit_gallery') }}">Gallery</a></li>
+                    <li><a href="{{ url_for('team') }}">Team</a></li>
+                    <li><a href="{{ url_for('permissions') }}">Permissions</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+
+                    <a href="URL_ADDRESS.me/919175423009" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+
+
+                    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; {{ now.year }} Pixel Club. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="page-loader">
+        <div class="logo-loader">
+            <svg id="Layer_1" viewBox="0 0 1078.78 1078.78">
+
+                <path
+                    d="M440.42,338.87c-32.51,23.26-62.6,51.57-81.87,87.05h-131.61v179.8c0,.11,1.44,1.55,1.55,1.55h135.24c10.98,26.75,33.62,48.32,56.67,65.09,10.8,7.86,22.79,13.97,33.49,21.95h-226.95v55.96h-87.05v-411.41h300.52Z" />
+                <path d="M500.53,343.02c58.57-13.09,121.98,4.57,165.34,45.62l-69.48,117.05-95.85-162.66Z" />
+                <path
+                    d="M577.21,560.63l96.9-162.71c1.64,0,6.71,6.61,8.18,8.4,31.49,38.53,46.58,95.18,35.55,144.16-.75,3.33-1.28,7.61-3.32,10.15h-137.31Z" />
+                <path d="M558.56,463.22h-191.71c16.88-56.43,64.79-100.57,120.8-117.08l70.92,117.08Z" />
+                <path d="M501.56,474.62l-95.85,161.67c-40.28-43.4-56.11-103.61-43.02-161.67h138.86Z" />
+                <path d="M711.93,571c-17.59,56.5-66.21,100.07-122.69,115.93l-67.98-115.93h190.68Z" />
+                <path d="M577.21,690.16c-57.32,10.69-118.65-4.21-161.17-44.59l65.85-117.06,95.32,161.65Z" />
+                <path
+                    d="M939.91,563.74c-1.06,52.36-37.1,107.48-87.53,124.39-4.44,1.49-17.74,5.15-21.8,5.15h-211.92l25.82-14.08c25.1-16.07,46.47-37.22,65.02-60.37l92.05-.18c29.29-3.73,55.29-25.89,61.68-54.91h76.69Z" />
+                <path
+                    d="M940.95,482.91h-79.79c-4.22-22.9-19.37-42.71-40.75-51.99-28.06-12.18-64.97-2.87-95.02-6.54-9.93-23.17-25.73-42.61-45.08-58.54l-26.4-18.68h171.51c3.41,0,13.23,2.59,17.09,3.63,56.91,15.28,95.9,74.76,98.45,132.12Z" />
+                <path
+                    d="M359.59,719.19c1.83,7.11-6.31,3.25-11.4,4.15-1.68,6.94,5.33,3.35,10.37,4.15,1.67,7.47-5.59,2.47-10.39,4.74v4.59c5.11.88,13.25-2.96,11.42,4.14h-16.58v-21.76h16.58Z" />
+                <path class="cls-6"
+                    d="M359.59,719.19c1.83,7.11-6.31,3.25-11.4,4.15-1.68,6.94,5.33,3.35,10.37,4.15,1.67,7.47-5.59,2.47-10.39,4.74v4.59c5.11.88,13.25-2.96,11.42,4.14h-16.58v-21.76h16.58Z" />
+
+                <path class="cls-6"
+                    d="M585.5,719.19c1.83,7.11-6.31,3.25-11.4,4.15-1.68,6.94,5.33,3.35,10.37,4.15,1.67,7.47-5.59,2.47-10.39,4.74v4.59c5.11.88,13.25-2.96,11.42,4.14h-16.58v-21.76h16.58Z" />
+                <path class="cls-3"
+                    d="M290.16,719.19h5.19s.59,8.31.59,8.31c1.58-.31,8.35.37,8.74-.01,1.42-1.42-3.27-10.65,4.14-8.3v21.76c0,.21-3.99.15-4.14,0-1.53-1.46,4.31-12.42-9.34-9.34v9.34s-5.18,0-5.18,0v-21.76Z" />
+                <path class="cls-7"
+                    d="M525.41,725.4c5.59-1.62,3.24-8.5,11.38-6.2.6.42-6.25,8.65-6.18,10.88s7.38,9.83,6.18,10.87c-5.38,1.1-7.88-2.6-9.33-7.25-3.99,2.95-3.85,8.94-10.34,7.25-1.83-1.74,5.81-8.3,5.85-10.87.03-2.4-6.93-9.93-5.85-10.88,4.87-.83,7.61,1.47,8.3,6.21Z" />
+                <path class="cls-8"
+                    d="M801.05,719.19c.15-.14,3.99-.15,4.14,0,1.03.98-2.9,18.18,5.54,17.39.94-.09,3.79-1.85,3.79-2.36v-15.03h5.18v16.06c0,6.79-18.65,7.53-18.65,0,0-2.3-.58-15.51,0-16.06Z" />
+                <path class="cls-1"
+                    d="M720.17,738.81c-.59.88-7.03,2.31-8.74,2.2-18.23-1.23-9.52-31.23,8.32-19.79.12,6.58-3.77,2.31-6.33,2.1-8.75-.69-9.54,13.8-.08,13.18.56-.04,10.77-3.55,6.84,2.31Z" />
+                <polygon class="cls-5"
+                    points="758.56 719.19 758.56 735.77 768.93 735.76 768.93 740.95 753.38 740.95 753.38 719.19 758.56 719.19" />
+                <path class="cls-10"
+                    d="M258.04,719.19c2.62,6.4-6.22,3.63-6.22,4.15v17.62h-5.18v-17.62c0-.52-8.84,2.25-6.22-4.15h17.62Z" />
+                <path class="cls-16"
+                    d="M622.81,719.19v16.58c0,.68,13.23-2.22,11.39,3.62-.92,2.94-12.68,1.04-15.54,1.56v-21.76c0-.21,3.4.14,4.15,0Z" />
+                <path class="cls-9" d="M484.98,719.19v20.21c0,1.36-3.83,1.89-5.18,1.55v-21.76h5.18Z" />
+                <g>
+                    <path class="cls-14"
+                        d="M853.9,740.95v-21.76c4.65.51,12.58-1.51,16.11,2.01,4.06,4.06-.67,7-.41,8.68.35,2.32,4.93,3.44,1.39,7.93s-11.93,2.82-17.08,3.13Z" />
+                    <path class="cls-12"
+                        d="M867.37,735.75c-1.09,1.72-12.1,2.37-9.33-4.13,2.49-.6,12.12-.29,9.33,4.13Z" />
+                    <path class="cls-13"
+                        d="M866.34,723.34c1.36,6.51-3.34,3.64-8.3,4.14-1.36-6.51,3.34-3.64,8.3-4.14Z" />
+                </g>
+                <g>
+                    <path class="cls-2"
+                        d="M429.02,719.19c5.32.51,13.53-1.88,17.07,3.13s.73,11.26-5.21,12.35c-6.08,1.11-7.47-2.93-6.67,6.28h-5.19v-21.77Z" />
+                    <path class="cls-4" d="M434.2,730.59v-7.26c11.05-1.44,11.07,8.69,0,7.26Z" />
+            </svg>
+        </div>
+    </div>
+
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loader = document.getElementById("page-loader");
+            const svg = loader.querySelector("svg");
+            const paths = svg.querySelectorAll("path");
+
+            let totalDuration = 0;
+
+            // Animate each path sequentially
+            paths.forEach(path => {
+                const length = path.getTotalLength();
+                path.style.strokeDasharray = length;
+                path.style.strokeDashoffset = length;
+
+                const drawDuration = length * 0.0002; // Adjust speed factor as needed
+                const delay = totalDuration;
+
+                path.style.animation = `drawPath ${drawDuration}s linear ${delay}s forwards`;
+
+                totalDuration += drawDuration;
+            });
+
+            // After all paths are drawn, fill + pulse
+            setTimeout(() => {
+                paths.forEach(path => {
+                    path.style.transition = "fill 1s";
+                    path.style.fill = "black"; // Set your desired fill color
+                });
+
+                svg.style.transition = "transform 0.6s ease";
+                svg.style.transform = "scale(1.1)";
+                setTimeout(() => {
+                    svg.style.transform = "scale(1)";
+                }, 600);
+            }, totalDuration * 1000);
+        });
+
+        // When the entire page (images, etc.) is loaded, hide the loader overlay
+        window.addEventListener("load", () => {
+            const loader = document.getElementById("page-loader");
+            setTimeout(() => {
+                loader.classList.add("hidden");
+            }, 2500); // 2000 ms = 2 seconds delay
+        });
+
+
+        // <!-- Back to top JS -->
+
+        // Get the button
+        const backToTopButton = document.getElementById("back-to-top");
+
+        // When the user scrolls down 200px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+                if (!backToTopButton.classList.contains("show")) {
+                    backToTopButton.classList.remove("hide");
+                    backToTopButton.classList.add("show");
+                }
+            } else {
+                if (backToTopButton.classList.contains("show")) {
+                    backToTopButton.classList.remove("show");
+                    backToTopButton.classList.add("hide");
+                }
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        backToTopButton.addEventListener("click", function () {
+            // Smooth scroll to top
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth"
+            });
+        });
+
+    </script>
+    
+
+
+
+
+    {% block script %}{% endblock %}
+</body>
+
+</html>

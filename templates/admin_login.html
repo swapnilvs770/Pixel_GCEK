@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login - Pixel Club</title>
+
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #e0f7fa, #ffffff);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            position: relative;
+        }
+
+        .login-container h2 {
+            margin-bottom: 25px;
+            color: #007bff;
+            font-size: 26px;
+            font-weight: 600;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            margin: 12px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .loader-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 16px;
+            display: none;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @media (max-width: 400px) {
+            .login-container {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="login-container">
+        <div>
+            <img src="{{ url_for('static', filename='images/logo-black.png') }}" alt="Pixel Club Logo"
+                style="width: 100px; height: auto; margin-bottom: 20px;">
+        </div>
+        <h2>Admin Login</h2>
+
+        <form id="login-form" action="{{ url_for('admin_login') }}" method="POST">
+            <input type="hidden" name="login_token" value="{{ login_token }}">
+            <input type="text" name="username" placeholder="Enter Username" required>
+            <input type="password" name="password" placeholder="Enter Password" required>
+            <button type="submit">Login</button>
+            <div style="padding: 10px;">
+            <button onclick="window.location.href='{{ url_for('index') }}'" class="home-btn">
+                    Return To Home Page
+                </button>
+            </div>
+            <p style="text-align: center; margin-top: 15px;">
+                <a href="#" id="changePasswordLink"
+                    style="color: #007bff; text-decoration: underline; cursor: pointer;">
+                    Forgot or Change Password?
+                </a>
+            </p>
+        </form>
+
+        <!-- Loader -->
+        <div class="loader-overlay" id="loader-overlay">
+            <div class="loader"></div>
+        </div>
+    </div>
+
+    <script>
+        // Show SweetAlert if there's a flashed message
+
+
+        // Show loader on form submit
+        document.getElementById('login-form').addEventListener('submit', function () {
+            document.getElementById('loader-overlay').style.display = 'flex';
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.getElementById("changePasswordLink").addEventListener("click", async function (e) {
+            e.preventDefault();
+
+            // Step 1: Get email and old password
+            const { value: email } = await Swal.fire({
+                title: 'Enter your email',
+                input: 'email',
+                inputPlaceholder: 'you@example.com',
+                confirmButtonText: 'Next',
+                showCancelButton: true
+            });
+            if (!email) return;
+
+            const { value: oldPassword } = await Swal.fire({
+                title: 'Enter your current password',
+                input: 'password',
+                inputPlaceholder: 'Current password',
+                confirmButtonText: 'Next',
+                showCancelButton: true
+            });
+            if (!oldPassword) return;
+
+            // Step 2: Ask for new password
+            const { value: newPassword } = await Swal.fire({
+                title: 'Enter new password',
+                input: 'password',
+                inputPlaceholder: 'New password',
+                confirmButtonText: 'Next',
+                showCancelButton: true
+            });
+            if (!newPassword) return;
+
+            const { value: confirmPassword } = await Swal.fire({
+                title: 'Confirm new password',
+                input: 'password',
+                inputPlaceholder: 'Confirm new password',
+                confirmButtonText: 'Change Password',
+                showCancelButton: true
+            });
+            if (!confirmPassword) return;
+
+            if (newPassword !== confirmPassword) {
+                Swal.fire('Error', 'Passwords do not match.', 'error');
+                return;
+            }
+
+            // Step 3: Call Flask route
+            const response = await fetch("/admin_change_password", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email,
+                    old_password: oldPassword,
+                    new_password: newPassword
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                Swal.fire('Success', 'Password changed successfully.', 'success');
+            } else {
+                Swal.fire('Error', result.message, 'error');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

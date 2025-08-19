@@ -1,0 +1,96 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Equipment Logs{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+  <h2>📋 Borrow Logs</h2>
+  <div class="search-form">
+    <form action="{{ url_for('equipment_logs') }}" method="GET">
+      <div class="form-group">
+        <label for="equipment_name">Equipment:</label>
+        <input type="text" id="equipment_name" name="equipment_name" value="{{ search_equipment }}"
+          placeholder="Search by equipment name">
+      </div>
+
+      <div class="form-group">
+        <label for="borrower_name">Borrower:</label>
+        <input type="text" id="borrower_name" name="borrower_name" value="{{ search_borrower }}"
+          placeholder="Search by borrower name">
+      </div>
+
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+          <option value="">-- All Statuses --</option>
+          {% for status_option in available_statuses %}
+          <option value="{{ status_option }}" {% if search_status==status_option %}selected{% endif %}>
+            {{ status_option }}
+          </option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="admin-button primary">Filter Logs</button>
+        {% if search_equipment or search_borrower or search_status %}
+        <button type="button" class="admin-button"
+          onclick="window.location.href='{{ url_for('equipment_logs') }}'">Clear Filters</button>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Equipment</th>
+        <th>Borrower</th>
+        <th>Issued At</th>
+        <th>Return Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% if logs %}
+      {% for log in logs %}
+      <tr>
+        <td data-label="Equipment">{{ log.equipment_name }}</td>
+        <td data-label="Borrower">{{ log.borrower_name }}</td>
+        <td data-label="Issued At">{{ log.issued_at.strftime('%Y-%m-%d') if log.issued_at else '' }}</td>
+        <td data-label="Return Date">{{ log.return_date.strftime('%Y-%m-%d') if log.return_date else '' }}</td>
+        <td data-label="Status">{{ log.status }}</td>
+      </tr>
+      {% endfor %}
+      {% else %}
+      <tr>
+        <td colspan="5">No borrow logs found with the current filters.</td>
+      </tr>
+      {% endif %}
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    {% if page > 1 %}
+    <a href="{{ url_for('equipment_logs', page=page-1,
+                          equipment_name=search_equipment,
+                          borrower_name=search_borrower,
+                          status=search_status) }}">Previous</a>
+    {% endif %}
+
+    {% for p in range(1, total_pages + 1) %}
+    <a href="{{ url_for('equipment_logs', page=p,
+                          equipment_name=search_equipment,
+                          borrower_name=search_borrower,
+                          status=search_status) }}" class="{% if p == page %}active{% endif %}">{{ p }}</a>
+    {% endfor %}
+
+    {% if page < total_pages %}
+    <a href="{{ url_for('equipment_logs', page=page+1,
+                          equipment_name=search_equipment,
+                          borrower_name=search_borrower,
+                          status=search_status) }}">Next</a>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

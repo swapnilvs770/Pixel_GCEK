@@ -1,0 +1,1785 @@
+/* Variables for modern light theme colors (Photography Club Aesthetic) */
+:root {
+    --primary-color: #00796B;
+    /* Deep Teal - Professional & Creative */
+    --secondary-color: #4DB6AC;
+    /* Soft Mint - Lighter complement */
+    --accent-color: #FF7043;
+    /* Vibrant Coral - Energetic pop */
+    --success-color: #4CAF50;
+    /* Emerald Green - Success */
+    --warning-color: #FFB300;
+    /* Soft Amber - Warning */
+    --bg-color: #F8F8F8;
+    /* Warm Off-White - Clean canvas */
+    --card-bg: #FFFFFF;
+    /* Pure White - Crisp content blocks */
+    --text-primary: #212121;
+    /* Charcoal Gray - Legible main text */
+    --text-muted: #757575;
+    /* Medium Gray - Muted text */
+    --border-color: #E0E0E0;
+    /* Light Gray - Subtle borders */
+    --navbar-bg: #FFFFFF;
+    /* White for navbar in light mode */
+    --navbar-text: var(--text-primary);
+}
+
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease, color 0.5s ease;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Custom styles for the new modern navbar design */
+.modern-navbar {
+    display: flex;
+    align-items: center;
+    background-color:#00796B; /* Dark background for the main navbar in light mode */
+    border-radius: 9999px; /* Fully rounded corners for the navbar pill */
+    padding: 8px 16px; /* Adjust padding as needed */
+    /* Using text-primary for shadow, assuming it's dark in light mode */
+    box-shadow: 0 4px 15px rgba(var(--text-primary-rgb), 0.2);
+    max-width: fit-content; /* Ensure the navbar shrinks to fit content */
+    margin: 20px auto; /* Center the navbar and give some top margin */
+    transition: background-color 0.5s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* Define RGB values for your main colors if not already present in :root */
+:root {
+    /* ... existing variables ... */
+    --text-primary-rgb: 33, 33, 33; /* RGB for #212121 (text-primary) */
+    --navbar-bg-rgb: 255, 255, 255; /* RGB for #FFFFFF (navbar-bg) */
+    --accent-color-rgb: 255, 112, 67; /* RGB for #FF7043 (accent-color) */
+}
+
+
+
+
+.modern-navbar .nav-logo {
+    background-color: #00796B; /* White background for the logo circle in light mode */
+    border-radius: 50%; /* Make it a circle */
+    width: 50px; /* Fixed width */
+    height: 50px; /* Fixed height */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 16px; /* Space between logo and nav links */
+    box-shadow: 0 2px 5px rgba(var(--text-primary-rgb), 0.1);
+    transition: background-color 0.5s ease;
+}
+
+/* --- FIX START --- */
+.modern-navbar .nav-logo img { /* Changed from svg to img */
+    width: 60px; /* Set the width for the image */
+    height: 60px; /* Set the height for the image */
+    object-fit: contain; /* Ensures the image scales down to fit without cropping */
+    transition: all 0.5s ease; /* Transition for potential future changes */
+}
+/* --- FIX END --- */
+
+
+.modern-navbar .nav-links {
+    list-style: none;
+    gap: 24px; /* Space between nav items */
+    margin: 0;
+    padding: 0;
+    flex-grow: 1; /* Allows links to take available space */
+    justify-content: flex-start; /* Align links to the left */
+}
+
+.modern-navbar .nav-links li {
+
+    display: inline-block; /* Ensure list items behave like blocks for padding */
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.modern-navbar .nav-links li a {
+    text-decoration: none;
+    color: var(--navbar-bg); /* White text for links in light mode */
+    font-weight: 500;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    padding: 8px 12px; /* Padding for click area and pill shape */
+    border-radius: 9999px; /* Rounded pill shape for links */
+    transition: background-color 0.3s ease, color 0.3s ease;
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+
+
+
+.modern-navbar .nav-links li a:hover,
+.modern-navbar .nav-links li a.active {
+    /* Use navbar-bg with opacity for hover/active in light mode */
+    background-color: rgba(var(--navbar-bg-rgb), 0.1);
+    color: white; /* Keep text white on hover/active in light mode */
+}
+
+
+
+.modern-navbar .nav-links li .logout-btn {
+    background-color: var(--accent-color); /* Use accent color for the logout button */
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Match padding with links */
+    font-weight: 500; /* Match font-weight with links */
+    border-radius: 9999px; /* Fully rounded pill shape */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    box-shadow: none; /* Remove previous box-shadow */
+    white-space: nowrap; /* Prevent text wrapping */
+}
+
+.modern-navbar .nav-links li .logout-btn:hover {
+    /* A slightly darker shade of --accent-color for hover */
+    background-color: #e5653b;
+    transform: none; /* Remove translateY from previous .logout-btn */
+    box-shadow: none; /* Remove previous box-shadow from hover */
+}
+
+
+
+/* Responsive Design adjustments for the modern-navbar specifically */
+@media (max-width: 992px) {
+    .modern-navbar {
+        flex-direction: column;
+        padding: 10px;
+        border-radius: 20px; /* Adjust border-radius for smaller screens */
+        width: 90%; /* Occupy more width on smaller screens */
+        max-width: 400px; /* Limit max width for readability */
+    }
+
+    .modern-navbar .nav-logo {
+        margin-bottom: 10px;
+        margin-right: 0; /* Remove right margin when stacked */
+    }
+
+    .modern-navbar .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center; /* Center items when stacked */
+    }
+
+    .modern-navbar .nav-links li {
+        width: 100%; /* Make list items take full width */
+        text-align: center;
+    }
+
+    .modern-navbar .nav-links li a,
+    .modern-navbar .nav-links li .logout-btn {
+        width: calc(100% - 24px); /* Full width minus horizontal padding */
+        display: block; /* Make them block elements to take full width */
+    }
+
+    .modern-navbar .user-email {
+        margin-top: 10px;
+        margin-left: 0; /* Remove left margin when stacked */
+        width: calc(100% - 32px); /* Full width minus horizontal padding */
+        text-align: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .modern-navbar {
+        padding: 8px;
+        width: 95%;
+    }
+
+    .modern-navbar .nav-logo {
+        width: 40px;
+        height: 40px;
+    }
+
+    .modern-navbar .nav-logo img { /* Changed from svg to img here too for responsiveness */
+        width: 20px;
+        height: 20px;
+    }
+
+    .modern-navbar .nav-links {
+        gap: 8px;
+    }
+
+    .modern-navbar .nav-links li a,
+    .modern-navbar .nav-links li .logout-btn,
+    .modern-navbar .user-email {
+        font-size: 0.9rem;
+        padding: 6px 10px;
+    }
+}
+
+
+
+
+
+
+
+/* --- Clean, Minimalist Hero Section Styling --- */
+
+/* Main Hero Container */
+.hero-section {
+    position: relative;
+    width: 100%;
+    /* Solid, neutral background color */
+    background-color: var(--bg-color); /* Using your defined warm off-white, or use #f5f5f5 (light grey) or #ECEFF1 (light blue-grey) */
+    /* background-color: #263238; /* Alternative: Deep charcoal for striking contrast */
+    
+    min-height: 30vh; /* Ample height for spacious feel */
+    display: flex;
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    text-align: center; /* Center text within the content block */
+    padding: 20px 20px; /* Generous padding top/bottom */
+    overflow: hidden; /* Prevent content overflow */
+    box-shadow: none; /* Ensure no shadows */
+}
+
+/* No hero-background-animated or hero-background-pattern for minimalism */
+
+/* Content Wrapper - Ensures text is centered and readable with ample negative space */
+.hero-content {
+    max-width: 900px; /* Optimal width for readability and negative space */
+    padding: 20px;
+    /* Color will be set per element for strong contrast against light background */
+    z-index: 2; /* Ensure content is above any theoretical background elements */
+}
+
+/* College Name - Subtle, clear, professional */
+.hero-section .college-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.15em;
+    font-weight: 400; /* Normal weight */
+    color: var(--text-muted); /* Medium gray for subtlety */
+    margin-bottom: 15px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+/* --- Club Name - Impactful with Complex Shining Effect (Smoother Transitions) --- */
+.hero-section .club-name {
+    font-family: 'Poppins', sans-serif;
+    font-size: 5.5em; /* Impactful, but not overly bold or decorative */
+    font-weight: 700; /* Bold, but not super heavy */
+    color: var(--text-primary); /* Fallback color for browsers that don't support text-fill-color */
+    margin-bottom: 25px;
+    line-height: 1.1;
+    letter-spacing: -1px; /* Subtle tightening for clean look */
+    text-shadow: none; /* No shadow for minimalistic feel */
+
+    /* Properties for the complex shining and pop-up effect */
+    background: linear-gradient(90deg, #fff, #aaa, #fff); /* White to light grey gradient for shine */
+    background-size: 80% 100%; /* Wider gradient for smoother shine */
+    background-repeat: no-repeat;
+    -webkit-background-clip: text; /* Clip background to text shape */
+    -webkit-text-fill-color: transparent; /* Make text transparent so background shines through */
+    background-position: -200% 0; /* Start position off-screen to the left */
+
+    /* Apply the new complex animation with improved timing and easing */
+    animation: clubNameComplexShine 6s infinite cubic-bezier(0.4, 0, 0.2, 1); /* Longer duration, custom easing */
+    transform: scale(1) translateY(0); /* Ensure initial state for animation */
+}
+
+/* Keyframes for the complex shining and pop-up effect for club name */
+@keyframes clubNameComplexShine {
+    /* Phase 1: Shining effect (slower and more pronounced) */
+    0% {
+        background-position: -200% 0;
+        -webkit-text-fill-color: transparent;
+        transform: scale(1) translateY(0);
+    }
+    35% { /* End of shine, gradient moves off */
+        background-position: 200% 0;
+        -webkit-text-fill-color: transparent;
+        transform: scale(1) translateY(0);
+    }
+
+    /* Phase 2: Pop-up and fill with Primary Color (smoother transition) */
+    45% { /* Start pop-up */
+        background-position: 200% 0; /* Gradient is off-screen */
+        -webkit-text-fill-color: var(--primary-color); /* Immediate color fill */
+        transform: scale(1.03) translateY(-3px); /* Gentle pop up */
+    }
+    55% { /* Peak of pop-up, holds color */
+        -webkit-text-fill-color: var(--primary-color);
+        transform: scale(1.02) translateY(-2px);
+    }
+
+    /* Phase 3: Return to original state to repeat the cycle (smooth fade out/down) */
+    65% { /* Begin transition back */
+        -webkit-text-fill-color: var(--primary-color);
+        transform: scale(1) translateY(0);
+    }
+    100% { /* End of cycle, text fades out to transparent, resets position */
+        background-position: -200% 0; /* Reset gradient position for next shine */
+        -webkit-text-fill-color: transparent; /* Reset to transparent for next shine */
+        transform: scale(1) translateY(0);
+    }
+}
+
+
+/* Media Queries (ensure they still adjust font size appropriately for smaller screens) */
+@media (max-width: 1200px) {
+    .hero-section .club-name { font-size: 5em; }
+}
+
+@media (max-width: 992px) {
+    .hero-section .club-name { font-size: 4.5em; letter-spacing: -3px; }
+}
+
+@media (max-width: 768px) {
+    .hero-section .club-name { font-size: 3.5em; letter-spacing: -2px; }
+}
+
+@media (max-width: 576px) {
+    .hero-section .club-name { font-size: 2.8em; margin-bottom: 15px; }
+}
+
+@media (max-width: 400px) {
+    .hero-section .club-name { font-size: 2.2em; }
+}
+
+/* Dynamic Tagline (now plain text) - Subtler and consistent */
+.hero-section .dynamic-tagline {
+    font-family: 'Poppins', sans-serif; /* Same font family for consistency */
+    /* Alternatively, for a touch of classic elegance with consistency:
+    font-family: 'Lora', serif; */
+    font-size: 1.8em; /* Subtler than club name */
+    font-weight: 500; /* Lighter weight */
+    color: var(--primary-color); /* Deep Teal for readability and a subtle brand hint */
+    line-height: 1.5;
+    margin-bottom: 40px; /* Generous space below */
+    text-shadow: none; /* No shadow */
+    padding: 0; /* Remove any padding from previous span styles */
+}
+
+/* Moto/Supporting Text - Clear and concise */
+.hero-section .moto {
+    font-family: 'Lora', serif;
+    font-size: 1.2em;
+    color: var(--text-primary); /* Charcoal gray for readability */
+    max-width: 700px; /* Maintain good line length */
+    margin: 0 auto 50px auto; /* Ample space below */
+    line-height: 1.7;
+}
+
+/* Call to Action Button - Clean, professional, and inviting */
+.cta-button {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--primary-color); /* Deep Teal - professional accent */
+    color: var(--card-bg); /* White text for strong contrast */
+    padding: 14px 35px;
+    border-radius: 5px; /* Slightly less rounded for a more formal feel */
+    text-decoration: none;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.05em;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: none; /* Minimalist: no shadow */
+    border: 2px solid var(--primary-color); /* Solid border for definition */
+}
+
+.cta-button:hover {
+    background-color: var(--secondary-color); /* Subtle change on hover */
+    color: var(--text-primary); /* Change text color for different hover feel */
+    transform: none; /* No lift effect for a calm feel */
+    box-shadow: none; /* No shadow on hover */
+    border-color: var(--secondary-color);
+}
+
+.cta-button i {
+    margin-left: 10px;
+    transition: transform 0.2s ease;
+}
+
+.cta-button:hover i {
+    transform: translateX(3px); /* Subtle arrow movement */
+}
+
+/* --- Navigation Bar Guidance (No direct code change here, apply to your navbar styles) --- */
+/*
+To make the navigation bar uniform with this minimalistic hero section:
+1.  Set its background to a solid color that complements the hero's background, e.g.:
+    .modern-navbar {
+        background-color: var(--bg-color); // Same as hero background
+        // or a slightly darker/lighter shade like #f0f0f0
+        // or for deep charcoal hero, #212121
+    }
+2.  Ensure navbar text/links are in a color with strong contrast:
+    .modern-navbar .nav-link {
+        color: var(--text-primary); // For light navbar
+        // or var(--card-bg) for dark navbar
+    }
+3.  Avoid complex shadows or animations on the navbar itself. Keep it clean.
+*/
+
+
+
+/* ===============================
+   Gallery Section Styling
+   =============================== */
+.index_page_gallery {
+    text-align: center;
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease;
+    padding: 40px 20px;
+}
+
+/* Title Styling */
+.index_page_our_work_title {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 40px;
+    position: relative;
+    display: inline-block;
+}
+
+.index_page_our_work_title::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+    bottom: -10px;
+    left: 20%;
+    border-radius: 2px;
+}
+
+/* Gallery Container: Horizontal Scrolling */
+.index_page_gallery_container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    gap: 20px;
+    padding-bottom: 10px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar for WebKit browsers */
+.index_page_gallery_container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Fade In + Scale Animation */
+@keyframes index_page_fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Album Card */
+.index_page_album_card {
+    flex: 0 0 auto;
+    width: 280px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+    animation: index_page_fadeInScale 0.7s ease forwards;
+    opacity: 0; /* start hidden */
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    scroll-snap-align: start;
+}
+
+/* Hover Scale */
+.index_page_album_card:hover {
+    transform: scale(1.03);
+}
+
+/* Image Styling */
+.index_page_album_thumb img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Album Overlay Styling (if you have overlay captions) */
+.index_page_album_overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    opacity: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+}
+
+.index_page_album_card:hover .index_page_album_overlay {
+    opacity: 1;
+}
+
+.index_page_album_title {
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 10px;
+}
+
+/* Staggered Animation Delays */
+.index_page_album_card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+.index_page_album_card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.index_page_album_card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+.index_page_album_card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+.index_page_album_card:nth-child(5) {
+    animation-delay: 0.5s;
+}
+.index_page_album_card:nth-child(6) {
+    animation-delay: 0.6s;
+}
+.index_page_album_card:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+/* Responsive: Adjust Card Width on Small Screens */
+@media (max-width: 600px) {
+    .index_page_album_card {
+        width: 220px;
+    }
+
+    .index_page_album_thumb img {
+        height: 160px;
+    }
+
+    .index_page_our_work_title {
+        font-size: 2rem;
+    }
+}
+
+
+
+/* See More Button */
+.see-more-container {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+#button-container {
+    display: inline-block;
+    margin: 10px auto;
+    padding: 15px 35px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+#button-container:hover {
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.35);
+}
+
+/* Team Section */
+#team {
+    text-align: center;
+    padding: 80px 20px;
+    background-color: var(--card-bg);
+    transition: background-color 0.5s ease;
+}
+
+#team .section-title {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+#team .section-title::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--primary-color));
+    bottom: -10px;
+    left: 20%;
+    border-radius: 2px;
+}
+
+.team-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    justify-content: center;
+    gap: 40px;
+    padding: 0 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.team-member {
+    background: var(--bg-color);
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    transition: transform 0.4s ease, box-shadow 0.4s ease, background-color 0.5s ease;
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--border-color);
+}
+
+.team-member:hover {
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.team-member img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 5px solid var(--primary-color);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    margin-bottom: 25px;
+    background-color: white;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.team-member:hover img {
+    transform: scale(1.1);
+    border-color: var(--secondary-color);
+}
+
+.team-member h3 {
+    font-size: 1.6rem;
+    margin: 0 0 10px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.team-member p {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    padding: 0 10px;
+    line-height: 1.5;
+}
+
+/* Contact Section */
+#contact {
+    text-align: center;
+    padding: 20px 20px;
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease;
+}
+
+#contact .section-title {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 50px;
+    position: relative;
+    display: inline-block;
+}
+
+#contact .section-title::after {
+    content: '';
+    position: absolute;
+    width: 60%;
+    height: 4px;
+    background: linear-gradient(90deg, var(--primary-color), var(--success-color));
+    bottom: -10px;
+    left: 20%;
+    border-radius: 2px;
+}
+
+.contact-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.instagram-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    background: var(--card-bg);
+    padding: 15px 30px;
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease-in-out, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.instagram-link:hover {
+    background: var(--primary-color);
+    transform: translateY(-5px) scale(1.02);
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.25);
+    border-color: var(--primary-color);
+}
+
+.instagram-link:hover .instagram-name,
+.instagram-link:hover .instagram-logo {
+    color: white;
+    filter: brightness(0) invert(1);
+    /* Invert to white for hover */
+}
+
+.instagram-logo {
+    width: 45px;
+    height: 45px;
+    margin-right: 15px;
+    transition: filter 0.3s ease;
+}
+
+.instagram-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+
+/* Vertical Gallery (for gallery.html) */
+.vertical-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 60px 20px;
+    max-width: 900px;
+    margin: auto;
+    background-color: var(--bg-color);
+    transition: background-color 0.5s ease;
+}
+
+.vertical-gallery img {
+    width: 100%;
+    max-width: 700px;
+    height: auto;
+    border-radius: 15px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    border: 3px solid var(--border-color);
+}
+
+.vertical-gallery img:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.25);
+    border-color: var(--primary-color);
+}
+
+/* Footer */
+.footer {
+    background-color: var(--card-bg);
+    color: var(--text-primary);
+    padding: 60px 0 0;
+    border-top: 1px solid var(--border-color);
+    font-family: 'Inter', sans-serif;
+    transition: background-color 0.5s ease, color 0.5s ease, border-top 0.5s ease;
+}
+
+
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+}
+
+.footer-section {
+    margin-bottom: 40px;
+}
+
+.footer-section h3 {
+    color: var(--text-primary);
+    font-size: 1.6rem;
+    margin-bottom: 25px;
+    position: relative;
+    padding-bottom: 15px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer-section h3::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 60px;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+    border-radius: 2px;
+}
+
+.footer-section p {
+    margin: 15px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+}
+
+.footer-section i {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    min-width: 25px;
+    flex-shrink: 0;
+}
+
+.footer-section ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section ul li {
+    margin-bottom: 15px;
+}
+
+.footer-section ul li a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 1.05rem;
+    transition: color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    position: relative;
+    padding-left: 10px;
+}
+
+.footer-section ul li a::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--primary-color);
+    transition: transform 0.3s ease;
+}
+
+.footer-section ul li a:hover {
+    color: var(--primary-color);
+    transform: translateX(8px);
+}
+
+.footer-section ul li a:hover::before {
+    transform: translateX(5px);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.social-links a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    width: 48px;
+    height: 48px;
+    background-color: var(--bg-color);
+    color: var(--text-muted);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.social-links a:hover {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    border-color: transparent;
+}
+
+.footer-bottom {
+    background-color: var(--navbar-bg);
+    padding: 25px 0;
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    transition: all 0.5s ease;
+}
+
+.dark-mode .footer-bottom {
+    border-top: 1px solid var(--border-color);
+}
+
+
+/* Back to Top Button */
+#back-to-top {
+    display: none;
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 99;
+    border: none;
+    outline: none;
+    background-color: var(--accent-color);
+    color: white;
+    cursor: pointer;
+    padding: 15px 20px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+#back-to-top:hover {
+    background-color: #E65100;
+    /* Darker coral on hover */
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .navbar {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 20px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 15px;
+    }
+
+    .nav-links a {
+        font-size: 1rem;
+    }
+
+    .tagline-container {
+        padding: 60px 15px;
+    }
+
+    .dynamic-tagline {
+        font-size: 2.5rem;
+    }
+
+    .moto {
+        font-size: 1.1rem;
+    }
+
+    .gallery-container {
+        padding: 20px 0;
+        gap: 20px;
+    }
+
+    .gallery-container img {
+        width: 280px;
+        height: 200px;
+    }
+
+    #team,
+    #contact,
+    .gallery {
+        padding: 60px 15px;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
+
+    .team-member {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto 30px auto;
+    }
+
+    .footer-container {
+        grid-template-columns: 1fr;
+        padding: 0 20px;
+        gap: 30px;
+    }
+
+    .footer-section h3 {
+        font-size: 1.4rem;
+    }
+
+    .social-links {
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .navbar {
+        padding: 10px 15px;
+    }
+
+    .logo img {
+        height: 100px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .tagline-container {
+        padding: 40px 10px;
+    }
+
+    .dynamic-tagline {
+        font-size: 2rem;
+    }
+
+    .moto {
+        font-size: 1rem;
+    }
+
+    .our-work-title,
+    #team .section-title,
+    #contact .section-title {
+        font-size: 1.8rem;
+        margin-bottom: 30px;
+    }
+
+    .gallery-container img {
+        width: 250px;
+        height: 180px;
+    }
+
+    #button-container {
+        padding: 12px 25px;
+        font-size: 1rem;
+    }
+
+    .team-member img {
+        width: 100px;
+        height: 100px;
+    }
+
+    .team-member h3 {
+        font-size: 1.4rem;
+    }
+
+    .team-member p {
+        font-size: 0.9rem;
+    }
+
+    .instagram-link {
+        padding: 10px 20px;
+    }
+
+    .instagram-logo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .instagram-name {
+        font-size: 1.1rem;
+    }
+
+    .footer-section h3 {
+        font-size: 1.2rem;
+    }
+
+    .footer-section p,
+    .footer-section ul li a {
+        font-size: 0.9rem;
+    }
+
+    #back-to-top {
+        bottom: 20px;
+        right: 20px;
+        padding: 12px 16px;
+        font-size: 1.2rem;
+    }
+}
+
+
+
+/* Gallery Specific Styles */
+.gallery-page {
+    padding: 20px 0;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.gallery-header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.gallery-header h1 {
+    font-size: 3.5rem;
+    color: var(--text-color);
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 10px;
+}
+
+.gallery-container {
+    width: 90%; /* Adjust if you want it to be truly full screen edge-to-edge */
+    display: flex;
+    flex-direction: column; /* Items stack vertically, each taking full width */
+    gap: 20px; /* Space between gallery items */
+    align-items: center;
+    justify-content: center;
+    margin: auto;
+    min-height: 100vh; /* Ensures content pushes footer down if not enough items */
+}
+
+.gallery-item {
+    position: relative;
+    width: 100%; /* Each item takes full width of its container */
+    max-width: 1000px; /* Optional: Set a max-width for very large screens */
+    height: 400px; /* Fixed height for consistency */
+    overflow: hidden; /* Ensures image zoom doesn't spill */
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for definition */
+}
+
+.gallery-item a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-decoration: none; /* Remove underline from link */
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the area without distortion */
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1); /* Image zooms in on hover */
+}
+
+.item-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    /* Use flexbox for positioning title and date */
+    display: flex;
+    justify-content: space-between; /* Pushes title to left, date to right */
+    align-items: flex-end; /* Aligns content to the bottom of the overlay */
+    padding: 30px; /* Padding inside the overlay */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent); /* Gradient black overlay */
+    color: white;
+    transform: translateY(100%); /* Hidden initially, below the image */
+    transition: transform 0.4s ease; /* Smooth transition for overlay */
+    pointer-events: none; /* Allows clicking through overlay to the link */
+    box-sizing: border-box; /* Include padding in width/height */
+}
+
+.gallery-item:hover .item-overlay {
+    transform: translateY(0); /* Overlay slides up from the bottom on hover */
+}
+
+.item-title {
+    font-size: 48px;
+    font-weight: bold;
+    margin: 0; /* Remove default margins */
+    text-align: left; /* Aligns within its flex item space */
+    flex-grow: 1; /* Allows it to take available space */
+    padding-right: 15px; /* Space between title and date */
+    white-space: nowrap; /* Prevents title from wrapping unless explicitly allowed */
+    overflow: hidden; /* Hides overflow if title is too long */
+    text-overflow: ellipsis; /* Adds ellipsis for long titles */
+}
+
+.item-date {
+    font-size: 25px;
+    margin: 0; /* Remove default margins */
+    text-align: right; /* Aligns within its flex item space */
+    opacity: 0.9;
+    flex-shrink: 0; /* Prevents date from shrinking */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gallery-item {
+        height: 300px;
+    }
+
+    .gallery-header h1 {
+        font-size: 2rem;
+    }
+
+    .item-title {
+        font-size: 28px;
+        padding-right: 10px;
+    }
+
+    .item-date {
+        font-size: 16px;
+    }
+
+    .item-overlay {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .gallery-item {
+        height: 250px;
+    }
+    .item-title {
+        font-size: 24px;
+    }
+    .item-date {
+        font-size: 14px;
+    }
+    .item-overlay {
+        padding: 15px;
+    }
+}
+
+/* Permissions Page Specific Styles */
+.permissions-header {
+    text-align: center; /* Add this line to center the content */
+}
+
+.permissions-header h1 {
+    font-size: 32px;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.permissions-header p {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-top: 0;
+}
+
+/* Form container */
+.permission-form {
+    width: 90%;
+    max-width: 800px;
+    margin: 0 auto 30px;
+    padding: 25px;
+    background: var(--card-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(var(--text-primary-rgb), 0.1);
+}
+
+/* Form structure */
+.permission-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 0;
+}
+
+/* Form rows */
+.permission-form .form-row {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+/* Label styles */
+.permission-form label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+}
+
+/* Input and Select Fields */
+.permission-form input,
+.permission-form select,
+.permission-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    background: var(--bg-color);
+    color: var(--text-primary);
+    transition: all 0.2s ease;
+}
+
+.permission-form input:focus,
+.permission-form select:focus,
+.permission-form textarea:focus {
+    border-color: var(--primary-color);
+    background: var(--card-bg);
+    box-shadow: 0 0 0 2px rgba(var(--primary-color-rgb), 0.1);
+}
+
+/* Textarea height */
+.permission-form textarea {
+    height: 80px;
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Button styles */
+.permission-form button {
+    background-color: var(--primary-color);
+    color: var(--navbar-bg);
+    font-size: 16px;
+    padding: 12px;
+    font-weight: 600;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    margin-top: 10px;
+}
+
+.permission-form button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .permission-form {
+        width: 100%;
+        padding: 20px 15px;
+    }
+
+    .permissions-header h1 {
+        font-size: 28px;
+    }
+
+    .permissions-header p {
+        font-size: 15px;
+    }
+}
+
+/* Styles for the typing effect text in permissions.html */
+.permissions-header p#typing-effect {
+    color: var(--primary-color);
+}
+
+
+
+
+/* Variables for modern light theme colors (Photography Club Aesthetic) */
+:root {
+    --primary-color: #00796B;
+    /* Deep Teal - Professional & Creative */
+    --secondary-color: #4DB6AC;
+    /* Soft Mint - Lighter complement */
+    --accent-color: #FF7043;
+    /* Vibrant Coral - Energetic pop */
+    --success-color: #4CAF50;
+    /* Emerald Green - Success */
+    --warning-color: #FFB300;
+    /* Soft Amber - Warning */
+    --bg-color: #F8F8F8;
+    /* Warm Off-White - Clean canvas */
+    --card-bg: #FFFFFF;
+    /* Pure White - Crisp content blocks */
+    --text-primary: #212121;
+    /* Charcoal Gray - Legible main text */
+    --text-muted: #757575;
+    /* Medium Gray - Muted text */
+    --border-color: #E0E0E0;
+    /* Light Gray - Subtle borders */
+    --navbar-bg: #FFFFFF;
+    /* White for navbar in light mode */
+    --navbar-text: var(--text-primary);
+
+    /* Bottom Nav specific variables (reusing modern-navbar shadow logic) */
+    --icon-color-active: #FFFFFF; /* White for the active icon inside the green circle */
+    --icon-color-inactive: var(--text-muted); /* Medium Gray for inactive icons */
+    --bottom-nav-bg: var(--card-bg); /* Use card-bg (white) for the bottom nav pill */
+    --active-circle-bg: var(--primary-color); /* Deep Teal for the active icon's circle */
+    --bottom-nav-shadow: 0 4px 15px rgba(var(--text-primary-rgb), 0.2); /* Floating shadow */
+    --hover-text-color: var(--primary-color); /* Color for text on hover */
+
+    /* RGB values for rgba calculations */
+    --text-primary-rgb: 33, 33, 33; /* RGB for #212121 (text-primary) */
+    --navbar-bg-rgb: 255, 255, 255; /* RGB for #FFFFFF (navbar-bg) */
+    --primary-color-rgb: 0, 121, 107; /* RGB values for #00796B */
+}
+
+/* Dark mode variables (adjusted to harmonize with the new light theme) */
+.dark-mode {
+    --primary-color: #00A38D;
+    /* Slightly brighter teal for dark mode */
+    --secondary-color: #6CD2C0;
+    /* Lighter mint for dark mode */
+    --accent-color: #FF9870;
+    /* Lighter coral for dark mode */
+    --success-color: #66BB6A;
+    /* Lighter green for dark mode */
+    --warning-color: #FFD54F;
+    /* Lighter amber for dark mode */
+    --bg-color: #263238;
+    /* Dark charcoal/blue-gray background */
+    --card-bg: #37474F;
+    /* Darker card background */
+    --text-primary: #ECEFF1;
+    /* Light text for dark mode */
+    --text-muted: #B0BEC5;
+    /* Lighter muted text */
+    --border-color: #546E7A;
+    /* Darker border */
+    --navbar-bg: #37474F;
+    /* Darker navbar in dark mode */
+    --navbar-text: var(--text-primary);
+
+    /* Bottom Nav specific variables for dark mode */
+    --icon-color-active: var(--text-primary); /* Light text for active icon in dark mode */
+    --icon-color-inactive: var(--text-muted); /* Lighter muted text for inactive */
+    --bottom-nav-bg: var(--card-bg); /* Darker card background for main bar */
+    --active-circle-bg: var(--primary-color); /* Slightly brighter teal for active circle */
+    --bottom-nav-shadow: 0 4px 15px rgba(255, 255, 255, 0.08); /* Dark mode shadow */
+    --hover-text-color: var(--secondary-color); /* Dark mode hover text color */
+
+    /* RGB values for rgba calculations in dark mode */
+    --text-primary-rgb: 248, 248, 248; /* RGB for #F8F8F8 (text-primary in dark mode) */
+    --navbar-bg-rgb: 33, 33, 33; /* RGB for #212121 (navbar-bg in dark mode) */
+    --primary-color-rgb: 0, 163, 141; /* RGB values for #00A38D */
+}
+
+/* Base styles for the floating bottom navigation (only visible on small screens) */
+.bottom-mobile-nav {
+    display: none; /* Hidden by default, shown via media query */
+    position: fixed;
+    bottom: 20px; /* Lift it slightly from the very bottom */
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    width: 90%; /* Occupy most of the width */
+    max-width: 500px; /* Limit max width for a consistent pill shape */
+    background-color: #00554b; /* White in light mode, dark card in dark mode */
+    border-radius: 9999px; /* Fully rounded pill shape */
+    box-shadow: var(--bottom-nav-shadow); /* Floating shadow similar to modern-navbar */
+    z-index: 1000;
+    justify-content: space-around;
+    align-items: center;
+    padding: 8px 16px; /* Adjust padding to match modern-navbar feel */
+    transition: background-color 0.5s ease, box-shadow 0.3s ease;
+    height: 70px; /* Fixed height for the entire bar */
+}
+
+.bottom-mobile-nav .nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--icon-color-inactive);
+    padding: 0; /* Remove padding from nav-item itself for precise sizing */
+    flex-grow: 1;
+    transition: color 0.3s ease, background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    width: 50px; /* Base size for inactive items */
+    height: 50px; /* Base size for inactive items, ensuring squareness for circle */
+    border-radius: 50%; /* Always a circle */
+    line-height: 1; /* Reset line-height to prevent vertical spacing issues */
+    text-align: center;
+}
+
+.bottom-mobile-nav .nav-item i {
+    font-size: 24px;
+    padding: 0;
+    transition: font-size 0.3s ease, color 0.3s ease;
+}
+
+.bottom-mobile-nav .nav-item span {
+    /* Styles for the hover text label */
+    display: block;
+    position: absolute;
+    bottom: 55px; /* Position above the icon (adjust based on active item size) */
+    font-size: 11px;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    background-color: var(--bottom-nav-bg); /* Use navbar background for text bubble */
+    color: var(--text-primary); /* Use primary text color for labels */
+    padding: 4px 8px;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* Hover effect for text on non-touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .bottom-mobile-nav .nav-item:hover:not(.active) span {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.bottom-mobile-nav .nav-item.active {
+    color: var(--icon-color-active); /* White icon */
+    background-color: var(--active-circle-bg); /* Deep Teal circle */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Stronger shadow for more pop */
+    transform: translateY(-28px); /* Increased lift for a more dramatic effect */
+    width: 18px; /* Base width for the active circle */
+    aspect-ratio: 1 / 1; /* Ensures height automatically matches width for a perfect circle */
+    border-radius: 50%; /* Ensures it's a perfect circle */
+    z-index: 1002; /* Ensure it's above other items and the bar */
+    /* Remove 'height' explicitly as aspect-ratio will handle it based on width */
+}
+
+.bottom-mobile-nav .nav-item.active i {
+    font-size: 32px; /* Slightly larger icon in active state for better visibility */
+}
+
+.bottom-mobile-nav .nav-item:hover:not(.active) {
+    color: var(--hover-text-color); /* Hover effect for inactive icons (icon color) */
+}
+
+
+/* Adjustments for main content to prevent being hidden by bottom nav */
+body {
+    /* Adjusted to cover the space taken by the floating bottom nav */
+    padding-bottom: 100px; /* Approximate height of nav (70px) + bottom margin (20px) + some buffer */
+}
+
+/* Media query to show bottom navigation and hide traditional navbar on small screens */
+@media (max-width: 992px) {
+    .modern-navbar {
+        display: none; /* Hide the existing modern navbar */
+    }
+
+    .bottom-mobile-nav {
+        display: flex; /* Show the bottom mobile navigation */
+    }
+
+    /* Consistent padding for mobile */
+    body {
+        padding-bottom: 100px;
+    }
+
+    /* Ensure the back-to-top button doesn't overlap the bottom nav */
+    #back-to-top {
+        bottom: 115px; /* Adjust to be above the floating bottom mobile nav */
+        right: 20px;
+    }
+}
+
+/* Small screen specific adjustments for overall layout if needed */
+@media (max-width: 480px) {
+    .bottom-mobile-nav {
+        height: 65px; /* Slightly smaller bar height on very small screens */
+        padding: 6px 12px; /* Adjusted padding for smaller screens */
+        bottom: 15px; /* Slightly less lift from bottom edge */
+    }
+    .bottom-mobile-nav .nav-item {
+        width: 45px;
+        height: 45px;
+    }
+    .bottom-mobile-nav .nav-item i {
+        font-size: 22px;
+    }
+    .bottom-mobile-nav .nav-item.active {
+        transform: translateY(-20px); /* Less lift for active item on very small screens */
+        width: 55px;
+        height: 55px;
+    }
+    .bottom-mobile-nav .nav-item.active i {
+        font-size: 26px;
+    }
+    body {
+        padding-bottom: 90px; /* Adjust padding for very small screens */
+    }
+    #back-to-top {
+        bottom: 100px; /* Adjust for very small screens */
+    }
+    .bottom-mobile-nav .nav-item span {
+        bottom: 45px; /* Adjust hover text position for smaller active item */
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+}
+
+
+/*  Fonts */
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600; /* semi-bold */
+}
+
+/* Use Lora for body text */
+body {
+    font-family: 'Lora', serif;
+    font-weight: 400;
+    color: #333;
+}
+
+/* Optional: customize specific elements */
+.navbar {
+    font-family: 'Poppins', sans-serif;
+}
+
+.footer {
+    font-family: 'Lora', serif;
+}
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Loaders CSS*/
+/* Loader overlay fills the whole screen */
+#page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8); /* semi-transparent white */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.5s ease;
+}
+
+/* Back to top*/
+
+/* Back to Top Button */
+#back-to-top {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #333; /* Dark background */
+    color: white; /* White text */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 50%; /* Rounded corners */
+    font-size: 24px; /* Increase font size */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth transitions */
+    width: 60px; /* Fixed width */
+    height: 60px; /* Fixed height */
+    display: flex; /* Use flexbox for centering content */
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+    font-family: 'Poppins', sans-serif; /* Use your preferred font */
+}
+
+#back-to-top:hover {
+    background-color: #555; /* Darker background on hover */
+    transform: translateY(-5px); /* Lift effect on hover */
+}
+
+/* Optional: Add a subtle pulse animation for visibility */
+#back-to-top.show {
+    animation: fadeIn 0.5s forwards;
+}
+
+#back-to-top.hide {
+    animation: fadeOut 0.5s forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); display: flex; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; transform: translateY(0); }
+    to { opacity: 0; transform: translateY(10px); display: none; }
+}
+
+/* Media query for smaller screens - adjust positioning */
+@media (max-width: 768px) {
+    #back-to-top {
+        bottom: 80px; /* Adjust for mobile nav bar */
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        font-size: 20px;
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    #back-to-top {
+        bottom: 70px; /* Further adjustment for very small screens */
+        right: 15px;
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        padding: 8px;
+    }
+}
+
+
+
+
+
+/* Hide it when not needed */
+#page-loader.hidden {
+  display: none;
+}
+
+.logo-loader svg {
+  width: 300px;
+  height: auto;
+}
+.logo-loader svg path {
+  fill: transparent;
+  stroke: black;
+  stroke-width: 2;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation-fill-mode: forwards;
+}
+
+@keyframes drawPath {
+  to {
+    stroke-dashoffset: 0;
+  }
+}

@@ -1,0 +1,192 @@
+{% extends "base_admin.html" %}
+
+{% block title %}View Admins - Pixel Club{% endblock %}
+
+{% block content %}
+<div class="admin-container" style="padding: 20px; max-width: 100%; overflow-x: auto;">
+    <h2>👥 All Admins</h2>
+    <p style="color: #6c757d;">List of all Super Admins, Co-Admins, and Faculty Advisors.</p>
+
+    {% if admins %}
+    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; min-width: 900px;">
+        <thead>
+            <tr style="background-color: #343a40; color: white;">
+                <th style="padding:10px; border:1px solid #ddd;">ID</th>
+                <th style="padding:10px; border:1px solid #ddd;">Username</th>
+                <th style="padding:10px; border:1px solid #ddd;">Email</th>
+                <th style="padding:10px; border:1px solid #ddd;">Role</th>
+                <th style="padding:10px; border:1px solid #ddd;">Photo</th>
+                {% if current_role == 'super_admin' %}
+                <th style="padding:10px; border:1px solid #ddd;">Actions</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for admin in admins %}
+            <tr style="background-color: {% if loop.index % 2 == 0 %}#f8f9fa{% else %}#ffffff{% endif %};">
+                <td style="padding:10px; border:1px solid #ddd;">{{ admin.id }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">{{ admin.username }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">{{ admin.email }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">{{ admin.role|replace('_',' ')|title }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">
+                    {% if admin.photo %}
+                    <a href="{{ url_for('static', filename='uploads/' ~ admin.photo) }}" target="_blank">
+                        <img src="{{ url_for('static', filename='uploads/' ~ admin.photo) }}" alt="Admin Photo"
+                            style="width:40px;height:40px;border-radius:50%;object-fit:cover;">
+                    </a>
+                    {% else %}N/A{% endif %}
+                </td>
+
+                {% if current_role == 'super_admin' %}
+                <td style="padding:10px; border:1px solid #ddd;">
+                    <div class="action-buttons" id="action-buttons-{{ admin.id }}">
+                        <button class="edit-btn" data-id="{{ admin.id }}"
+                            style="margin:2px; background-color:#007bff; color:white; border:none; padding:5px 10px; border-radius:3px;">
+                            ✏️ Edit
+                        </button>
+                        <button class="delete-user-btn" data-id="{{ admin.id }}"
+                            style="margin:2px; background-color:#dc3545; color:white; border:none; padding:5px 10px; border-radius:3px;">
+                            🗑 Delete
+                        </button>
+                    </div>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p style="color: red; margin-top: 20px;">No admins found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('admin_dashboard') }}">
+        <button
+            style="margin-top: 20px; background-color: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px;">
+            ⬅ Back to Dashboard
+        </button>
+    </a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    const table = document.querySelector("table");
+
+    table.addEventListener("click", function (event) {
+        const target = event.target;
+        const adminId = target.dataset.id;
+
+        if (!adminId) return;
+
+        if (target.classList.contains("edit-btn")) {
+            const container = document.getElementById("action-buttons-" + adminId);
+            container.innerHTML = `
+            <button class="appoint-head-btn" data-id="${adminId}" style="margin:2px; background-color:#28a745; color:white; border:none; padding:5px 10px; border-radius:3px;">Appoint Head</button>
+            <button class="change-photo-btn" data-id="${adminId}" style="margin:2px; background-color:#17a2b8; color:white; border:none; padding:5px 10px; border-radius:3px;">Change Photo</button>
+            <button class="change-pass-btn" data-id="${adminId}" style="margin:2px; background-color:#ffc107; color:white; border:none; padding:5px 10px; border-radius:3px;">Change Password</button>
+            <button class="delete-user-btn" data-id="${adminId}" style="margin:2px; background-color:#dc3545; color:white; border:none; padding:5px 10px; border-radius:3px;">Delete</button>
+        `;
+            return;
+        }
+
+        if (target.classList.contains("appoint-head-btn")) {
+            Swal.fire({
+                title: 'Confirm',
+                text: 'Make this user Super Admin?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Appoint',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/appoint_head/${adminId}`, { method: 'POST' })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Success', 'User promoted to Super Admin.', 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        if (target.classList.contains("change-photo-btn")) {
+            Swal.fire({
+                title: 'Upload New Photo',
+                input: 'file',
+                inputAttributes: {
+                    'accept': 'image/*'
+                },
+                showCancelButton: true,
+                confirmButtonText: 'Upload',
+            }).then((fileResult) => {
+                if (fileResult.value) {
+                    const formData = new FormData();
+                    formData.append('photo', fileResult.value);
+                    fetch(`/change_photo/${adminId}`, {
+                        method: 'POST',
+                        body: formData
+                    }).then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Success', 'Photo updated.', 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        if (target.classList.contains("change-pass-btn")) {
+            Swal.fire({
+                title: 'Enter New Password',
+                input: 'password',
+                showCancelButton: true,
+                confirmButtonText: 'Change Password',
+            }).then((pwResult) => {
+                if (pwResult.value) {
+                    fetch(`/change_password_direct/${adminId}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ new_password: pwResult.value })
+                    }).then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Success', 'Password changed.', 'success');
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        });
+                }
+            });
+        }
+
+        if (target.classList.contains("delete-user-btn")) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'This action cannot be undone.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Delete',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(`/delete_admin/${adminId}`, { method: 'POST' })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Deleted!', 'User has been deleted.', 'success')
+                                    .then(() => location.reload());
+                            } else {
+                                Swal.fire('Error', data.message, 'error');
+                            }
+                        });
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

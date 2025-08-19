@@ -1,0 +1,217 @@
+{% extends "base_admin.html" %}
+
+{% block title %}Admin Dashboard - Pixel Club{% endblock %}
+
+{% block content %}
+<div class="admin-container">
+    <h2>Welcome to Admin Dashboard {{ username }}</h2>
+
+    <p>Manage all permission requests for Pixel Club.</p>
+
+    {% if admin_role == 'super_admin' %}
+    <div style="margin-bottom: 20px; display:flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <a href="{{ url_for('add_coadmin') }}" style="text-decoration: none;">
+            <button
+                style="background-color:#00796B; color:white; padding:10px 20px; border:none; border-radius:5px;">➕
+                Add Co-Admin</button>
+        </a>
+        <a href="{{ url_for('view_admins') }}" style="text-decoration: none;">
+            <button style="background-color:#00796B; color:white; padding:10px 20px; border:none; border-radius:5px;">👥
+                View All Admins</button>
+        </a>
+        <a href="{{ url_for('inventory') }}" style="text-decoration: none;">
+            <button style="background-color:#00796B; color:white; padding:10px 20px; border:none; border-radius:5px;">📸
+                View All Inventory</button>
+        </a>
+        <a href="{{ url_for('view_eq_requests') }} " style="text-decoration: none;">
+            <button style="background-color:#00796B; color:white; padding:10px 20px; border:none; border-radius:5px;">📩
+                View Equipment Requests</button>
+        </a>
+    </div>
+    {% elif admin_role == 'co_admin' %}
+    <div style="margin-bottom: 20px;">
+        <p style="color:#6c757d;"><strong>Note:</strong> You have limited access as a Pixel Member.</p>
+    </div>
+    {% endif %}
+
+    <table class="responsive-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Event Details</th>
+                <th>Overall Status</th>
+                <th>Pixel Member Approval</th>
+                <th>Pixel Head Approval</th>
+                <th>Faculty Advisor Approval</th>
+                <th>Email Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+            <tr>
+                <td data-label="ID">{{ req.id }}</td>
+                <td data-label="Event Details">
+                    <b>Request Submit By:</b> {{ req.user_name }}<hr>
+                    <b>Club Name:</b> {{ req.club }}<hr>
+                    <b>Request Date:</b> {{ req.request_date}}<hr>
+                    <Details>
+                        <hr><b>Request Time:</b>{{ req.request_time }}<hr>
+                        <b>Event Location:</b> {{ req.location }}<hr>
+                        <b>Contact No:</b> {{ req.contact_no }}
+                    </Details>
+                </td>
+                <td data-label="Overall Status">
+                    {% if req.status == 'approved' %} <h3 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Approved</h3>
+                    {% elif req.status == 'rejected' %} <h3 style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                    {% else %} ⏳ Pending
+                    {% endif %}
+                </td>
+                <td data-label="Pixel Member Approval">
+                    <div>
+                        {% if req.status == 'pending' and req.pixel_member_approval_status == 'pending' and admin_role == 'co_admin' %}
+<h3 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Approved</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.pixel_member_approval_by %} {% if req.pixel_member_approval_time %}
+                    <details>
+                        <div><strong>By:</strong> {{ req.pixel_member_approval_by }}</div><hr>
+                        <div><strong>Time:</strong> {{ req.pixel_member_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if req.pixel_member_approval_status == 'pending' and admin_role == 'co_admin' %}
+                    <div class="action-buttons-group">
+                        <button type="button" class="action-btn accept-btn" onclick="sendRequest({{ req.id }}, 'approve', 'pixel_member')">Accept</button>
+                    </div>
+                    {% endif %}
+                </td>
+                <td data-label="Pixel Head Approval">
+                    <div>
+                        {% if req.status == 'pending' and req.pixel_head_approval_status == 'pending' and admin_role == 'super_admin' %}
+ <h3 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Approved</h3>
+                        {% elif req.pixel_head_approval_status == 'rejected' %} <h3 style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.pixel_head_approval_by %} {% if req.pixel_head_approval_time %}
+                    <details>
+                        <div><strong>By:</strong> {{ req.pixel_head_approval_by }}</div><hr>
+                        <div><strong>Time:</strong> {{ req.pixel_head_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if req.pixel_head_approval_status == 'pending' and admin_role == 'super_admin' %}
+                    <div class="action-buttons-group">
+                        <button type="button" class="action-btn accept-btn" onclick="sendRequest({{ req.id }}, 'approve', 'pixel_head')">Accept</button>
+                        <button type="button" class="action-btn reject-btn" onclick="sendRequest({{ req.id }}, 'reject', 'pixel_head')">Reject</button>
+                    </div>
+                    {% endif %}
+                </td>
+                <td data-label="Faculty Advisor Approval">
+                    <div>
+                        {% if req.faculty_advisor_approval_status == 'approved' %} <h3 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Approved</h3>
+                        {% elif req.faculty_advisor_approval_status == 'rejected' %} <h3 style="padding: 4px; margin: 0%; color: Red;display: flex; align-items: center; justify-content: center;">Rejected</h3>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.faculty_advisor_approval_by %} {% if req.faculty_advisor_approval_time %}
+                    <details>
+                        <hr>
+                        <div><strong>By:</strong> {{ req.faculty_advisor_approval_by }}</div><hr>
+                        <div><strong>Time:</strong> {{ req.faculty_advisor_approval_time }}</div>
+                    </details>
+                    {% endif %}
+                    {% endif %}
+                    {% if req.status == 'pending' and req.faculty_advisor_approval_status == 'pending' and admin_role == 'faculty_advisor' %}
+
+                    <div class="action-buttons-group">
+                        <button type="button" class="action-btn accept-btn" onclick="sendRequest({{ req.id }}, 'approve', 'faculty_advisor')">Accept</button>
+                        <button type="button" class="action-btn reject-btn" onclick="sendRequest({{ req.id }}, 'reject', 'faculty_advisor')">Reject</button>
+                    </div>
+                    {% endif %}
+                </td>
+                <td data-label="Email Status">
+                    <div>
+                        {% if req.email_notification_status == 'Sent' %}<h4 style="padding: 4px; margin: 0%; color: green; display: flex; align-items: center; justify-content: center;">Email Sent Successfully</h4><hr>
+                        {% else %} ⏳ Pending
+                        {% endif %}
+                    </div>
+                    {% if req.email_notification_status == 'Sent' %}
+                    <Details>
+                        <div><strong>Clg Verified Mail:</strong> {{ req.Clg_Mail}}</div><hr>
+                        <div><strong>Mail send To:</strong> {{ req.email_id}}</div>
+                    </Details>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    // This script will dynamically add data-label attributes to table cells based on headers.
+    // It's placed here to ensure the table content is rendered before script execution.
+    document.addEventListener('DOMContentLoaded', function() {
+        const responsiveTables = document.querySelectorAll('.responsive-table');
+
+        responsiveTables.forEach(table => {
+            const headers = Array.from(table.querySelectorAll('thead th')).map(th => th.textContent.trim());
+
+            table.querySelectorAll('tbody tr').forEach(row => {
+                row.querySelectorAll('td').forEach((td, index) => {
+                    if (headers[index]) {
+                        td.setAttribute('data-label', headers[index]);
+                    }
+                });
+            });
+        });
+    });
+
+    function sendRequest(requestId, action, roleType) {
+        // action: 'approve' or 'reject'
+        // roleType: 'pixel_member', 'pixel_head', 'faculty_advisor'
+        const url = `/admin/request/${requestId}/${action}/${roleType}?token={{ token }}`;
+        const confirmText = action === 'approve' ? 'Yes, approve it!' : 'Yes, reject it!';
+        const actionText = action.charAt(0).toUpperCase() + action.slice(1);
+        const roleDisplayName = roleType.replace('_', ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+        Swal.fire({
+            title: `${actionText} this request as ${roleDisplayName}?`,
+            text: `Are you sure you want to ${action} this request for the ${roleDisplayName} role?`,
+            icon: action === 'approve' ? 'info' : 'warning',
+            showCancelButton: true,
+            confirmButtonColor: action === 'approve' ? '#28a745' : '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: confirmText
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(url, { method: 'POST' })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 'success') {
+                            Swal.fire(`${actionText}d ✅`, data.message, 'success').then(() => {
+                                location.reload();
+                            });
+                        } else if (data.status === 'info') { // New status for intermediate approvals
+                            Swal.fire(`${actionText}d ℹ️`, data.message, 'info').then(() => {
+                                location.reload();
+                            });
+                        } else if (data.status === 'warning') {
+                            Swal.fire(`${actionText}d with Warning ⚠️`, data.message, 'warning').then(() => {
+                                location.reload();
+                            });
+                        } else {
+                            Swal.fire("Error ❌", data.message, "error");
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire("Error ❌", `${actionText} failed!`, "error");
+                    });
+            }
+        });
+    }
+</script>
+{% endblock %}
